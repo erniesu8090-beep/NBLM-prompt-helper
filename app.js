@@ -565,36 +565,6 @@ const PRESET_TEMPLATES = {
   }
 };
 
-function resetToGenericDefaults() {
-  currentPresetKey = "";
-  lastPresetKeyword = "";
-
-  if (hostAName) hostAName.value = "";
-  if (hostAGender) hostAGender.value = "男性";
-  if (hostAStance) hostAStance.value = "";
-  if (hostAStyle) hostAStyle.value = "";
-  if (hostASpecialty) hostASpecialty.value = "";
-  if (hostAHabit) hostAHabit.value = "";
-
-  if (hostBName) hostBName.value = "";
-  if (hostBGender) hostBGender.value = "女性";
-  if (hostBStance) hostBStance.value = "";
-  if (hostBStyle) hostBStyle.value = "";
-  if (hostBSpecialty) hostBSpecialty.value = "";
-  if (hostBHabit) hostBHabit.value = "";
-
-  if (interactionStyle) interactionStyle.value = "";
-
-  if (presetButtons) {
-    presetButtons.forEach(btn => btn.classList.remove("active"));
-  }
-  if (tagPills) {
-    tagPills.forEach(pill => pill.classList.remove("active"));
-  }
-
-  updatePrompt();
-}
-
 function handleTopicKeywordSync() {
   if (!currentPresetKey) return;
 
@@ -619,9 +589,6 @@ function handleTopicKeywordSync() {
       lastPresetKeyword = newKeyword;
       updatePrompt();
     }
-  } else {
-    // The user has changed the topic to something entirely custom or different from the active preset
-    resetToGenericDefaults();
   }
 }
 
