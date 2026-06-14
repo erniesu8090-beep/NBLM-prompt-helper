@@ -269,6 +269,72 @@ const PRESETS = {
       framework: "5 Whys 連續發問分析",
       target: "應急與SOP修訂建議"
     }
+  },
+  bazi: {
+    topic: "2026 丙午年八字運勢解析：歲運併臨真的必有災殃嗎？",
+    audience: "一般大眾",
+    rhythm: "W型起伏",
+    hostA: {
+      name: "玄大師",
+      gender: "男性",
+      stance: "正統命理角度，依據天干地支與陰陽五行消長，解析運勢的起伏與劫數",
+      style: "玄妙神秘、慈祥沉穩、用字文雅但通俗",
+      specialty: "子平八字、紫微斗數、五行相生相剋",
+      habit: "善用「天干丙火、地支午火」等術語，但會迅速轉譯成生活比喻（如烈火烤金），強調改運避凶之法。"
+    },
+    hostB: {
+      name: "柯學家",
+      gender: "女性",
+      stance: "理性懷疑派，認為命理是一種心理安撫，傾向用社會學與巴納姆效應解釋",
+      style: "理性實證、條理分析、帶著善意懷疑的幽默",
+      specialty: "社會統計學、認知心理學",
+      habit: "常問「這會不會是倖存者偏差？」或「這在現代統計數據上能得到證實嗎？」，並點出人性的期望效應。"
+    },
+    interaction: "命理傳統與現代科學認知的趣味碰撞，彼此探討不流於迷信或流於無情說教"
+  },
+  stock: {
+    topic: "台股與美股半導體板塊深度解盤與未來風控配置策略",
+    audience: "一般大眾",
+    rhythm: "W型起伏",
+    hostA: {
+      name: "益師傅",
+      gender: "男性",
+      stance: "極度看好先進製程與 AI 帶來的半導體產業爆發潮",
+      style: "熱情積極、數據導向、擅長化繁為簡",
+      specialty: "半導體產業趨勢、技術分析（先進製程與 CoWoS 封裝）",
+      habit: "常以關鍵出貨數據做正面解讀，習慣用「這是未來五年的黃金賽道」來鼓舞市場。"
+    },
+    hostB: {
+      name: "小麗",
+      gender: "女性",
+      stance: "持保留觀望態度，強調地緣政治風險與成熟製程過剩問題",
+      style: "謹慎冷靜、語氣犀利、重視地緣政治影響與產能利用率",
+      specialty: "全球供應鏈宏觀分析、外資法人籌碼分析",
+      habit: "每段對話至少追問 2 次「那麼成熟製程的價格戰怎麼解？」或「這真的能撐起如此高的估值嗎？」"
+    },
+    interaction: "專業半導體產業分析師與宏觀風控專家的實力交鋒，數據交織，既有高度專業性又有觀點衝突"
+  },
+  career: {
+    topic: "AI 浪潮襲來，文科生如何進行跨界職涯轉型與技能重塑",
+    audience: "一般大眾",
+    rhythm: "W型起伏",
+    hostA: {
+      name: "阿建 (架構師)",
+      gender: "男性",
+      stance: "積極推廣工程化思維，相信 AI 工具能為文科生賦能，消除技術藩籬",
+      style: "耐心指導、循循善誘、擅長給出具體行動建議",
+      specialty: "系統架構、程式重構、職涯導師",
+      habit: "常說「這在以前很難，但現在有 AI 可以直接幫你寫出第一版」，引導文科生運用自身邏輯與文字優勢。"
+    },
+    hostB: {
+      name: "小新 (工程師)",
+      gender: "女性",
+      stance: "身為成功轉型的文科生，強調轉型過程的學習陣痛、學習曲線、日常操作痛點與實務心態建立",
+      style: "求實坦率、自嘲幽默、切中痛點",
+      specialty: "一線業務開發、轉型心路歷程",
+      habit: "每段都會提醒「但初學者一開始看到終端機報錯真的會崩潰！」或「最難的不是寫扣，而是搞懂開發環境配置。」"
+    },
+    interaction: "資深架構師與過來人文科生程式員的對話，兼具技術高度與情感共鳴，給予文科生實用的轉型指南"
   }
 };
 
@@ -601,6 +667,22 @@ function init() {
           ws.classList.remove("active");
         }
       });
+
+      // Update header tagline text based on active tab
+      const headerTitle = document.getElementById("header-title");
+      const headerDesc = document.getElementById("header-desc");
+      if (headerTitle && headerDesc) {
+        if (targetTab === "audio-overview") {
+          headerTitle.textContent = "調出兩個聲音的對話節奏";
+          headerDesc.textContent = "為主持人設定人設與節奏，一鍵輸出完美對話提示詞";
+        } else if (targetTab === "presentation-helper") {
+          headerTitle.textContent = "突破簡報 15 頁的生成限制";
+          headerDesc.textContent = "自動分組規劃與首尾銜接，無損合併完美長簡報";
+        } else if (targetTab === "video-summary") {
+          headerTitle.textContent = "精煉影片逐字稿的核心細節";
+          headerDesc.textContent = "自訂技術焦點與筆記結構，一鍵提取影音實操精華";
+        }
+      }
     });
   });
 
@@ -686,6 +768,16 @@ function init() {
       topic: "離心式轉動設備機械振動頻譜分析與故障診斷實務講座",
       focus: "學術/技術講座",
       format: "問答與培訓考核庫"
+    },
+    finance: {
+      topic: "柴鼠存股分析與日常理財規劃工具使用說明影片",
+      focus: "生活理財/3C評測",
+      format: "操作重點與 SOP 清單"
+    },
+    cooking: {
+      topic: "法式紅酒燉牛肉家庭料理實作與火候控制教學影片",
+      focus: "生活理財/3C評測",
+      format: "結構化時間軸筆記"
     }
   };
 
@@ -698,7 +790,7 @@ function init() {
     setRadioValue("video-format", preset.format);
 
     // Toggle active style of preset buttons
-    ["operation", "safety", "training"].forEach(k => {
+    ["operation", "safety", "training", "finance", "cooking"].forEach(k => {
       const btn = document.getElementById(`video-preset-${k}`);
       if (btn) {
         if (k === key) {
@@ -712,7 +804,7 @@ function init() {
     updateVideoPrompt();
   }
 
-  ["operation", "safety", "training"].forEach(key => {
+  ["operation", "safety", "training", "finance", "cooking"].forEach(key => {
     const btn = document.getElementById(`video-preset-${key}`);
     if (btn) {
       btn.addEventListener("click", () => loadVideoPreset(key));
@@ -786,6 +878,7 @@ function updateVideoPrompt() {
   ${focus === "化工/製程講解" ? "- 製程流程走向、管線連接、閥門開關順序、DCS自控引導與熱力學參數變化。" : ""}
   ${focus === "安全與事故還原" ? "- 異常情況發生的最初徵兆（視覺、聽覺、參數）、一線人員的應變速度、防禦屏障失效點、應急防護與洩壓動作。" : ""}
   ${focus === "學術/技術講座" ? "- 技術理論大綱、設備故障機制、頻譜分析數據、診斷結論與科學佐證。" : ""}
+  ${focus === "生活理財/3C評測" ? "- 生活痛點與需求分析、日常理財工具/試算步驟、3C產品或軟體之優缺點分析與購買使用建議。" : ""}
 
 【三、輸出格式與排版要求】
 請嚴格依據「${format}」的格式進行排版與輸出：

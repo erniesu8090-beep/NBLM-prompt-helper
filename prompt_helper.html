@@ -25,8 +25,8 @@
         </div>
       </div>
       <div class="header-tagline">
-        <h2>調出兩個聲音的對話節奏</h2>
-        <p>為主持人設定人設與節奏，一鍵輸出完美對話提示詞</p>
+        <h2 id="header-title">調出兩個聲音的對話節奏</h2>
+        <p id="header-desc">為主持人設定人設與節奏，一鍵輸出完美對話提示詞</p>
       </div>
       <div class="status-badge">
         <span class="status-dot"></span>
@@ -80,6 +80,9 @@
               <span class="tag-pill" data-tag="技術規格">💻 技術規格</span>
               <span class="tag-pill" data-tag="員工SOP">🧑‍🏫 員工SOP</span>
               <span class="tag-pill" data-tag="資安宣導">🛡️ 資安宣導</span>
+              <span class="tag-pill" data-tag="命理運勢">🔮 命理運勢</span>
+              <span class="tag-pill" data-tag="投資理財">📈 投資理財</span>
+              <span class="tag-pill" data-tag="職涯轉型">💼 職涯轉型</span>
             </div>
           </div>
 
@@ -459,6 +462,33 @@
                 </button>
               </div>
             </div>
+
+            <div class="preset-section">
+              <span class="preset-section-title">🔮 LIFESTYLE & FINANCE (生活與投資理財)</span>
+              <div class="presets-grid">
+                <button class="preset-btn" data-preset="bazi">
+                  <span class="btn-icon">🔮</span>
+                  <div class="btn-info">
+                    <span class="btn-title">八字命理運勢</span>
+                    <span class="btn-subtitle">玄大師 vs 柯學家 ➔ 運勢與科學碰撞</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="stock">
+                  <span class="btn-icon">📈</span>
+                  <div class="btn-info">
+                    <span class="btn-title">股市解盤分析</span>
+                    <span class="btn-subtitle">多方分析師 vs 空方風控官 ➔ 趨勢與風控對談</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="career" style="grid-column: span 2;">
+                  <span class="btn-icon">💼</span>
+                  <div class="btn-info">
+                    <span class="btn-title">文科生跨界職涯轉型</span>
+                    <span class="btn-subtitle">阿建 (架構師) vs 小新 (轉型文科生) ➔ AI浪潮跨界職涯建議</span>
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Output Monitor -->
@@ -605,6 +635,9 @@
               <span class="tag-pill video-tag-pill" data-tag="安全培訓">🚨 安全培訓</span>
               <span class="tag-pill video-tag-pill" data-tag="技術講座">📚 技術講座</span>
               <span class="tag-pill video-tag-pill" data-tag="現場巡檢">🔍 現場巡檢</span>
+              <span class="tag-pill video-tag-pill" data-tag="日常理財">📈 日常理財</span>
+              <span class="tag-pill video-tag-pill" data-tag="烹飪教學">🍳 烹飪教學</span>
+              <span class="tag-pill video-tag-pill" data-tag="3C開箱">📱 3C開箱</span>
             </div>
           </div>
 
@@ -616,7 +649,7 @@
               <p>設定提示詞，使 AI 重點擷取影片中的特定技術細節</p>
             </div>
             
-            <div class="audience-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="audience-grid" style="grid-template-columns: repeat(5, 1fr);">
               <label class="audience-option">
                 <input type="radio" name="video-focus" value="技術實操示範" checked>
                 <div class="option-content">
@@ -647,6 +680,14 @@
                   <span class="option-icon">📚</span>
                   <span class="option-title">技術講座</span>
                   <span class="option-desc">理論大綱、數據分析、推導結論</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="video-focus" value="生活理財/3C評測">
+                <div class="option-content">
+                  <span class="option-icon">🛍️</span>
+                  <span class="option-title">生活/理財</span>
+                  <span class="option-desc">開箱評測、理財工具、日常生活</span>
                 </div>
               </label>
             </div>
@@ -724,6 +765,20 @@
                   <div class="btn-info">
                     <span class="btn-title">轉動設備振動分析與故障診斷講座</span>
                     <span class="btn-subtitle">技術講座 + 問答考核庫 ➔ 生成培訓課後測驗</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="video-preset-finance" style="border-left: 3px solid var(--accent-purple);">
+                  <span class="btn-icon" style="color: var(--accent-purple);">📈</span>
+                  <div class="btn-info">
+                    <span class="btn-title">柴鼠存股分析與日常理財規劃影片</span>
+                    <span class="btn-subtitle">生活/理財 + SOP 清單 ➔ 存股步驟與理財公式</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="video-preset-cooking" style="border-left: 3px solid var(--accent-purple);">
+                  <span class="btn-icon" style="color: var(--accent-purple);">🍳</span>
+                  <div class="btn-info">
+                    <span class="btn-title">法式紅酒燉牛肉料理實作教學影片</span>
+                    <span class="btn-subtitle">生活/理財 + 時間軸筆記 ➔ 提取步驟與火候細節</span>
                   </div>
                 </button>
               </div>
