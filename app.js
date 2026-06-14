@@ -529,10 +529,80 @@ function updatePrompt() {
   promptOutput.textContent = finalPrompt;
 }
 
+// Global tracking for active preset key and its active keyword
+let currentPresetKey = "";
+let lastPresetKeyword = "";
+
+// Templates for stances/specialties/habits/interaction that can be dynamically updated
+const PRESET_TEMPLATES = {
+  bazi: {
+    defaultKeyword: "八字",
+    prefix: "2026 丙午年",
+    suffix: "運勢解析：歲運併臨真的必有災殃嗎？",
+    fields: {
+      "hostA-specialty": "子平{keyword}、紫微斗數、五行相生相剋"
+    }
+  },
+  stock: {
+    defaultKeyword: "半導體",
+    prefix: "台股與美股",
+    suffix: "板塊深度解盤與未來風控配置策略",
+    fields: {
+      "hostA-stance": "極度看好先進製程與 AI 帶來的{keyword}產業爆發潮",
+      "hostA-specialty": "{keyword}產業趨勢、技術分析（先進製程與 CoWoS 封裝）"
+    }
+  },
+  career: {
+    defaultKeyword: "文科生",
+    prefix: "AI 浪潮襲來，",
+    suffix: "如何進行跨界職涯轉型與技能重塑",
+    fields: {
+      "hostA-stance": "積極推廣工程化思維，相信 AI 工具能為{keyword}賦能，消除技術藩籬",
+      "hostA-habit": "常說「這在以前很難，但現在有 AI 可以直接幫你寫出第一版」，引導{keyword}運用自身邏輯與文字優勢。",
+      "hostB-stance": "身為成功轉型的{keyword}，強調轉型過程的學習陣痛、學習曲線、日常操作痛點與實務心態建立",
+      "interaction-style": "資深架構師與過來人{keyword}程式員的對話，兼具技術高度與情感共鳴，給予{keyword}實用的轉型指南"
+    }
+  }
+};
+
+function handleTopicKeywordSync() {
+  if (!currentPresetKey || !PRESET_TEMPLATES[currentPresetKey]) return;
+
+  const tplInfo = PRESET_TEMPLATES[currentPresetKey];
+  const val = topicInput.value;
+  
+  if (val.startsWith(tplInfo.prefix) && val.endsWith(tplInfo.suffix)) {
+    const newKeyword = val.substring(tplInfo.prefix.length, val.length - tplInfo.suffix.length);
+    if (newKeyword && newKeyword !== lastPresetKeyword) {
+      // Loop through each field and update if it matches the previous keyword's generated text
+      for (const [id, tplString] of Object.entries(tplInfo.fields)) {
+        const el = document.getElementById(id);
+        if (el) {
+          const prevGeneratedText = tplString.replaceAll("{keyword}", lastPresetKeyword || tplInfo.defaultKeyword);
+          const currentText = el.value;
+          // Only update if the user hasn't manually edited the field
+          if (currentText === prevGeneratedText) {
+            el.value = tplString.replaceAll("{keyword}", newKeyword);
+          }
+        }
+      }
+      lastPresetKeyword = newKeyword;
+      updatePrompt();
+    }
+  }
+}
+
 // Load Preset Config
 function loadPreset(presetKey) {
   const config = PRESETS[presetKey];
   if (!config) return;
+
+  currentPresetKey = presetKey;
+  if (PRESET_TEMPLATES[presetKey]) {
+    lastPresetKeyword = PRESET_TEMPLATES[presetKey].defaultKeyword;
+  } else {
+    lastPresetKeyword = "";
+  }
 
   // Set Inputs
   topicInput.value = config.topic;
@@ -619,6 +689,10 @@ function init() {
       }
     });
   });
+
+  if (topicInput) {
+    topicInput.addEventListener("input", handleTopicKeywordSync);
+  }
 
   // Presets load triggers
   presetButtons.forEach(btn => {
