@@ -1,4 +1,4 @@
-# CAST. v2 | NotebookLM 提示詞主控台
+# CAST. Studio | NotebookLM 提示詞主控台
 
 這是一個專為 **NotebookLM (NBLM)** 設計的提示詞配置與生成工具。本工具採用現代深色玻璃擬物風格（Dark Glassmorphic UI）設計，具備四個獨立分頁（雙通道語音、長簡報分組、影片總覽、簡報講解口白），能為您快速調配、生成、與複製最完美的 Prompt，極大化發揮 NotebookLM 的內容萃取與轉譯能力。
 

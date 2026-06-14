@@ -758,6 +758,24 @@ function init() {
         } else if (targetTab === "video-summary") {
           headerTitle.textContent = "精煉影片逐字稿的核心細節";
           headerDesc.textContent = "自訂技術焦點與筆記結構，一鍵提取影音實操精華";
+        } else if (targetTab === "slide-narrative") {
+          headerTitle.textContent = "為簡報投影片調配口白與腳本";
+          headerDesc.textContent = "設定角色人設與口說調性，一鍵生成高品質投影片講解口白提示詞";
+        }
+      }
+
+      // Update header theme class based on active tab
+      const headerElement = document.querySelector(".header");
+      if (headerElement) {
+        headerElement.classList.remove("theme-audio", "theme-ppt", "theme-video", "theme-narrative");
+        if (targetTab === "audio-overview") {
+          headerElement.classList.add("theme-audio");
+        } else if (targetTab === "presentation-helper") {
+          headerElement.classList.add("theme-ppt");
+        } else if (targetTab === "video-summary") {
+          headerElement.classList.add("theme-video");
+        } else if (targetTab === "slide-narrative") {
+          headerElement.classList.add("theme-narrative");
         }
       }
     });

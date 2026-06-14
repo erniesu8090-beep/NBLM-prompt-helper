@@ -94,6 +94,25 @@ body {
   backdrop-filter: blur(12px);
   margin-bottom: 24px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tab-specific border glow states for header */
+.header.theme-audio {
+  border-color: rgba(255, 159, 67, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 159, 67, 0.1);
+}
+.header.theme-ppt {
+  border-color: rgba(0, 210, 211, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 210, 211, 0.1);
+}
+.header.theme-video {
+  border-color: rgba(165, 94, 234, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 15px rgba(165, 94, 234, 0.1);
+}
+.header.theme-narrative {
+  border-color: rgba(240, 147, 43, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 15px rgba(240, 147, 43, 0.15);
 }
 
 .logo-area {
@@ -102,9 +121,24 @@ body {
   gap: 16px;
 }
 
-.logo-icon {
-  font-size: 32px;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+.logo-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.15));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-icon-wrapper:hover {
+  transform: scale(1.05) rotate(3deg);
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .logo-text h1 {
