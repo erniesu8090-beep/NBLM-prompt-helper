@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAST. v2 | NotebookLM 雙通道提示詞主控台</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars-bg"></div>
+  <div class="container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="logo-area">
+        <span class="logo-icon">🎙️</span>
+        <div class="logo-text">
+          <h1>CAST. <span>v2</span></h1>
+          <p>DUAL-CHANNEL PROMPT CONSOLE</p>
+        </div>
+      </div>
+      <div class="header-tagline">
+        <h2>調出兩個聲音的對話節奏</h2>
+        <p>為主持人設定人設與節奏，一鍵輸出完美對話提示詞</p>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>CONSOLE ACTIVE</span>
+      </div>
+    </header>
+
+    <!-- TAB NAVIGATION -->
+    <nav class="tab-navigation">
+      <button class="tab-btn active" data-tab="audio-overview">
+        <span class="tab-icon">🎙️</span>
+        <span class="tab-text">雙通道語音提示詞</span>
+      </button>
+      <button class="tab-btn" data-tab="presentation-helper">
+        <span class="tab-icon">📊</span>
+        <span class="tab-text">簡報 15頁限制突破</span>
+      </button>
+      <button class="tab-btn" data-tab="video-summary">
+        <span class="tab-icon">📹</span>
+        <span class="tab-text">影片摘要提示詞</span>
+      </button>
+    </nav>
+
+    <!-- WORKSPACE TABS CONTENT -->
+    
+    <!-- TAB 1: AUDIO OVERVIEW WORKSPACE -->
+    <div id="audio-overview-workspace" class="workspace-tab-content active">
+      <div class="main-grid">
+        
+        <!-- LEFT: PARAMETERS PANEL -->
+        <section class="panel-left">
+          
+          <!-- 01 Topic -->
+          <div class="card card-topic">
+            <div class="card-num">01</div>
+            <div class="card-header-text">
+              <h3>分析主題</h3>
+              <p>設定要導讀或討論的核心概念</p>
+            </div>
+            
+            <div class="input-group">
+              <input type="text" id="topic-input" placeholder="例如：台股/美股深度解盤分析..." autocomplete="off">
+            </div>
+            
+            <div class="tags-container">
+              <span class="tag-pill" data-tag="化工製程">⚗️ 化工製程</span>
+              <span class="tag-pill" data-tag="腐蝕機制">🧪 腐蝕機制</span>
+              <span class="tag-pill" data-tag="儀器原理">🔬 儀器原理</span>
+              <span class="tag-pill" data-tag="轉動設備">⚙️ 轉動設備</span>
+              <span class="tag-pill" data-tag="安全排查">🚨 安全排查</span>
+              <span class="tag-pill" data-tag="技術規格">💻 技術規格</span>
+              <span class="tag-pill" data-tag="員工SOP">🧑‍🏫 員工SOP</span>
+              <span class="tag-pill" data-tag="資安宣導">🛡️ 資安宣導</span>
+            </div>
+          </div>
+
+          <!-- 02 Audience -->
+          <div class="card card-audience">
+            <div class="card-num">02</div>
+            <div class="card-header-text">
+              <h3>目標聽眾</h3>
+              <p>影響術語難度、語意密度與解釋深度</p>
+            </div>
+            
+            <div class="audience-grid">
+              <label class="audience-option">
+                <input type="radio" name="audience" value="初學者" checked>
+                <div class="option-content">
+                  <span class="option-icon">🎒</span>
+                  <span class="option-title">初學者</span>
+                  <span class="option-desc">白話比喻、入門概念</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="audience" value="一般大眾">
+                <div class="option-content">
+                  <span class="option-icon">👥</span>
+                  <span class="option-title">一般大眾</span>
+                  <span class="option-desc">科普推廣、實用生活</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="audience" value="專業人士">
+                <div class="option-content">
+                  <span class="option-icon">🧠</span>
+                  <span class="option-title">專業人士</span>
+                  <span class="option-desc">產業細節、深度探討</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="audience" value="主管與決策者">
+                <div class="option-content">
+                  <span class="option-icon">👔</span>
+                  <span class="option-title">主管決策者</span>
+                  <span class="option-desc">戰略方向、宏觀局勢</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="audience" value="投資人">
+                <div class="option-content">
+                  <span class="option-icon">📈</span>
+                  <span class="option-title">投資人</span>
+                  <span class="option-desc">風險回報、財務數據</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 03 Rhythm -->
+          <div class="card card-rhythm">
+            <div class="card-num">03</div>
+            <div class="card-header-text">
+              <h3>情緒節奏曲線</h3>
+              <p>設定節目中對話張力與反轉的走向</p>
+            </div>
+            
+            <div class="rhythm-grid">
+              <label class="rhythm-option">
+                <input type="radio" name="rhythm" value="W型起伏" checked>
+                <div class="rhythm-content">
+                  <div class="curve-visual">
+                    <svg viewBox="0 0 100 40" class="curve-svg">
+                      <path d="M 10 30 Q 30 10, 50 30 T 90 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+                      <circle cx="10" cy="30" r="3" fill="currentColor"></circle>
+                      <circle cx="50" cy="30" r="3" fill="currentColor"></circle>
+                      <circle cx="90" cy="10" r="3" fill="currentColor"></circle>
+                    </svg>
+                  </div>
+                  <span class="rhythm-title">W型起伏</span>
+                  <span class="rhythm-desc">故事起承轉合，聽眾最愛</span>
+                </div>
+              </label>
+              
+              <label class="rhythm-option">
+                <input type="radio" name="rhythm" value="漸強式">
+                <div class="rhythm-content">
+                  <div class="curve-visual">
+                    <svg viewBox="0 0 100 40" class="curve-svg">
+                      <path d="M 10 35 C 40 35, 60 25, 90 5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+                      <circle cx="10" cy="35" r="3" fill="currentColor"></circle>
+                      <circle cx="90" cy="5" r="3" fill="currentColor"></circle>
+                    </svg>
+                  </div>
+                  <span class="rhythm-title">漸強式</span>
+                  <span class="rhythm-desc">論點層層遞進，越辯越深</span>
+                </div>
+              </label>
+              
+              <label class="rhythm-option">
+                <input type="radio" name="rhythm" value="先高後穩">
+                <div class="rhythm-content">
+                  <div class="curve-visual">
+                    <svg viewBox="0 0 100 40" class="curve-svg">
+                      <path d="M 10 5 C 30 5, 50 30, 90 30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+                      <circle cx="10" cy="5" r="3" fill="currentColor"></circle>
+                      <circle cx="90" cy="30" r="3" fill="currentColor"></circle>
+                    </svg>
+                  </div>
+                  <span class="rhythm-title">先高後穩</span>
+                  <span class="rhythm-desc">開場爆點吸睛，隨後理性</span>
+                </div>
+              </label>
+              
+              <label class="rhythm-option">
+                <input type="radio" name="rhythm" value="雲霄飛車">
+                <div class="rhythm-content">
+                  <div class="curve-visual">
+                    <svg viewBox="0 0 100 40" class="curve-svg">
+                      <path d="M 10 35 L 30 5 L 50 35 L 70 5 L 90 35" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+                      <circle cx="10" cy="35" r="3" fill="currentColor"></circle>
+                      <circle cx="30" cy="5" r="3" fill="currentColor"></circle>
+                      <circle cx="50" cy="35" r="3" fill="currentColor"></circle>
+                      <circle cx="70" cy="5" r="3" fill="currentColor"></circle>
+                      <circle cx="90" cy="35" r="3" fill="currentColor"></circle>
+                    </svg>
+                  </div>
+                  <span class="rhythm-title">雲霄飛車</span>
+                  <span class="rhythm-desc">多次正反反轉，適合辯論</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 04 Safety Analysis (Optional) -->
+          <div class="card card-safety-framework">
+            <div class="card-num">04</div>
+            <div class="card-header-text">
+              <h3>事故安全分析 (選填)</h3>
+              <p>選填分析框架與解說導向，系統將自動套用事故解說專屬 Prompt</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label>分析與解說框架 (Framework)</label>
+                <select id="accident-framework">
+                  <option value="無" selected>無 (一般對談 Podcast)</option>
+                  <option value="RCA 根源原因分析">RCA 根源原因分析</option>
+                  <option value="Swiss Cheese 瑞士乳酪理論">Swiss Cheese 瑞士乳酪理論</option>
+                  <option value="5 Whys 連續發問分析">5 Whys 連續發問分析</option>
+                  <option value="魚骨圖要因分析">魚骨圖要因分析</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label>解說目標與重點 (Target)</label>
+                <select id="accident-target">
+                  <option value="無" selected>無 (一般對談)</option>
+                  <option value="專業事故調查報告">專業事故調查報告</option>
+                  <option value="員工安全培訓教材">員工安全培訓教材</option>
+                  <option value="應急與SOP修訂建議">應急與SOP修訂建議</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 05 Host Personas -->
+          <div class="card card-hosts">
+            <div class="card-num">05</div>
+            <div class="card-header-text">
+              <h3>主持人雙通道設定</h3>
+              <p>調製兩位主持人的立場、語氣與性格通道</p>
+            </div>
+            
+            <div class="hosts-container">
+              <!-- HOST A: Channel A (Optimistic/Positive) -->
+              <div class="host-channel channel-a">
+                <div class="channel-header">
+                  <span class="channel-dot"></span>
+                  <h4>CH-A 主持人 (正方/樂觀)</h4>
+                </div>
+                <div class="channel-body">
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>姓名</label>
+                      <input type="text" id="hostA-name" placeholder="例如：益師傅">
+                    </div>
+                    <div class="form-col">
+                      <label>性別</label>
+                      <select id="hostA-gender">
+                        <option value="男性">男性</option>
+                        <option value="女性">女性</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>立場傾向</label>
+                      <input type="text" id="hostA-stance" placeholder="例如：樂觀積極、持正向態度">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>語氣風格</label>
+                      <input type="text" id="hostA-style" placeholder="例如：熱情幽默、通俗易懂、口條流暢">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>專業定位</label>
+                      <input type="text" id="hostA-specialty" placeholder="例如：擅長技術指標、擅長科普比喻">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>常態發言習慣/口頭禪</label>
+                      <textarea id="hostA-habit" rows="2" placeholder="例如：常以驚人數據開場，喜歡給予「可立即行動」的建議。"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- HOST B: Channel B (Skeptical/Critical) -->
+              <div class="host-channel channel-b">
+                <div class="channel-header">
+                  <span class="channel-dot"></span>
+                  <h4>CH-B 主持人 (反方/質疑)</h4>
+                </div>
+                <div class="channel-body">
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>姓名</label>
+                      <input type="text" id="hostB-name" placeholder="例如：小麗">
+                    </div>
+                    <div class="form-col">
+                      <label>性別</label>
+                      <select id="hostB-gender">
+                        <option value="女性" selected>女性</option>
+                        <option value="男性">男性</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>立場傾向</label>
+                      <input type="text" id="hostB-stance" placeholder="例如：保守懷疑、注重風控避險">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>語氣風格</label>
+                      <input type="text" id="hostB-style" placeholder="例如：理智冷靜、追根究底、語氣犀利">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>專業定位</label>
+                      <input type="text" id="hostB-specialty" placeholder="例如：擅長宏觀經濟、尋找財報潛在漏洞">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label>常態發言習慣/口頭禪</label>
+                      <textarea id="hostB-habit" rows="2" placeholder="例如：習慣至少追問 2 次「真的嗎？」、「有數據支持嗎？」，強調防範未然。"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row extra-setting">
+              <div class="form-col">
+                <label>兩位主持人的互動對談調性</label>
+                <input type="text" id="interaction-style" value="有默契、語氣自然、觀點不同但彼此尊重，像好朋友在聊天" placeholder="例如：觀點不同但不對立，輕鬆對談...">
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- RIGHT: PRESETS & OUTPUT PANEL -->
+        <section class="panel-right">
+          
+          <!-- Presets -->
+          <div class="card card-presets">
+            <div class="presets-header">
+              <span class="preset-icon">⚡</span>
+              <h3>快速模板 · PRESETS</h3>
+            </div>
+            
+            <div class="preset-section">
+              <span class="preset-section-title">INDUSTRIAL & ENGINEERING</span>
+              <div class="presets-grid">
+                <button class="preset-btn" data-preset="chemical_process">
+                  <span class="btn-icon">⚗️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">化工製程解析</span>
+                    <span class="btn-subtitle">製程工程師 vs DCS 操作員</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="corrosion_mechanism">
+                  <span class="btn-icon">🧪</span>
+                  <div class="btn-info">
+                    <span class="btn-title">腐蝕機制與防護</span>
+                    <span class="btn-subtitle">材料專家 vs 現場巡檢員</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="instrument_principle">
+                  <span class="btn-icon">🔬</span>
+                  <div class="btn-info">
+                    <span class="btn-title">精密儀器原理</span>
+                    <span class="btn-subtitle">儀器工程師 vs 分析實驗員</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="rotating_equipment">
+                  <span class="btn-icon">⚙️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">轉動設備與密封</span>
+                    <span class="btn-subtitle">設備工程師 vs 檢修班長</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="industrial_safety">
+                  <span class="btn-icon">🚨</span>
+                  <div class="btn-info">
+                    <span class="btn-title">安全與事故排查</span>
+                    <span class="btn-subtitle">安環工程師 vs 現場值班長</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="preset-section">
+              <span class="preset-section-title">EDUCATION & TRAINING</span>
+              <div class="presets-grid">
+                <button class="preset-btn" data-preset="tech_doc">
+                  <span class="btn-icon">💻</span>
+                  <div class="btn-info">
+                    <span class="btn-title">技術規範宣導</span>
+                    <span class="btn-subtitle">資深架構師 vs 新進工程師</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="sop_training">
+                  <span class="btn-icon">🧑‍🏫</span>
+                  <div class="btn-info">
+                    <span class="btn-title">員工業務培訓</span>
+                    <span class="btn-subtitle">SOP 宣導與情境模擬問答</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="security">
+                  <span class="btn-icon">🛡️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">資安防範宣導</span>
+                    <span class="btn-subtitle">資安官 vs 忙碌員工防釣魚對談</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="preset-section">
+              <span class="preset-section-title">🚨 SAFETY & ACCIDENT DEBRIEF (事故案例解說)</span>
+              <div class="presets-grid" style="grid-template-columns: 1fr;">
+                <button class="preset-btn" data-preset="accident_corrosion" style="border-left: 3px solid #ff4757;">
+                  <span class="btn-icon" style="color: #ff4757;">🧪</span>
+                  <div class="btn-info">
+                    <span class="btn-title">重沸器管束應力腐蝕洩漏事故</span>
+                    <span class="btn-subtitle">RCA 分析框架 ➔ 著重技術失效與時序重建</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="accident_seal" style="border-left: 3px solid #ff4757;">
+                  <span class="btn-icon" style="color: #ff4757;">⚙️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">運轉中原料泵浦機械軸封失效起火</span>
+                    <span class="btn-subtitle">瑞士乳酪框架 ➔ 著重多重防護失效與安全培訓</span>
+                  </div>
+                </button>
+                <button class="preset-btn" data-preset="accident_dcs" style="border-left: 3px solid #ff4757;">
+                  <span class="btn-icon" style="color: #ff4757;">💻</span>
+                  <div class="btn-info">
+                    <span class="btn-title">DCS系統失能致反應器超壓起跳</span>
+                    <span class="btn-subtitle">5 Whys 連續分析 ➔ 著重防呆機制與SOP修訂</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Output Monitor -->
+          <div class="card card-monitor">
+            <div class="monitor-header">
+              <div class="monitor-status">
+                <span class="pulse-dot"></span>
+                <h3>提示詞輸出 · MONITOR</h3>
+              </div>
+            </div>
+            
+            <div class="monitor-area">
+              <pre id="prompt-output" class="prompt-text">填好設定，即可在此監控生成的提示詞...</pre>
+            </div>
+            
+            <div class="monitor-actions">
+              <button id="copy-btn" class="action-btn copy-btn">
+                <span class="btn-text">📋 複製提示詞</span>
+              </button>
+              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+                <span>🚀 開啟 NotebookLM</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+        
+      </div> <!-- Closes main-grid -->
+    </div> <!-- Closes audio-overview-workspace -->
+
+    <!-- TAB 2: PRESENTATION HELPER WORKSPACE -->
+    <div id="presentation-helper-workspace" class="workspace-tab-content">
+      <div class="presentation-grid">
+        
+        <!-- Left Column: PPT Prompt Master -->
+        <div class="card card-ppt-prompt">
+          <div class="card-num">01</div>
+          <div class="card-header-text">
+            <h3>NBLM 專用分組提示詞範本</h3>
+            <p>複製下方提示詞貼入 NotebookLM 對話框，進行長簡報分組規劃</p>
+          </div>
+          
+          <div class="prompt-preview-box">
+            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師。請深入分析目前筆記本中的所有來源文件，並為我規劃一份結構完整的簡報架構，且直接將其拆分為「每組不超過 13 頁」的 NBLM 簡報生成提示詞。
+
+請嚴格遵守以下規則：
+1. 頁數評估：每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points），自動評估最適總頁數 N。
+2. 設計規範：定義一組 global_design_specification（配色 Hex Code、氛圍、佈局風格）。
+3. 分組輸出：
+   - 若總頁數大於 13 頁，請按每組最多 13 頁切分（如：第 1 組、第 2 組...）。
+   - 請直接輸出「您可以直接複製並貼入 NBLM 簡報生成功能」的具體 Prompt 內容。
+   - 【關鍵銜接機制】：在第 2 組的 Prompt 開頭，你必須自動融入「第 1 組封面（風格錨點）」與「第 13 頁的詳細內容與視覺描述（邏輯緩衝區）」，命令 NBLM 在生成第 2 組時必須自然銜接第 13 頁的視覺與敘事。
+
+請直接以下方的格式輸出分組結果，方便我一鍵複製：
+
+=== 【第 1 組簡報生成 Prompt (第 1 - 13 頁)】 ===
+(在此輸出完整提示詞，包含全域設計規範、1-13頁每頁的標題、副標題與視覺描述)
+
+=== 【第 2 組簡報生成 Prompt (第 14 - 26 頁)】 ===
+(在此輸出完整提示詞，包含全域設計規範、第 1 頁封面風格錨點、第 13 頁內容與視覺緩衝、以及 14-26 頁每頁的標題與視覺描述)</pre>
+          </div>
+          
+          <div class="ppt-actions">
+            <button id="copy-ppt-btn" class="action-btn copy-btn">
+              <span class="btn-text">📋 複製簡報規劃提示詞</span>
+            </button>
+            <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+              <span>🚀 開啟 NotebookLM</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Merging instructions -->
+        <div class="card card-ppt-guide">
+          <div class="card-num">02</div>
+          <div class="card-header-text">
+            <h3>長簡報分組生成與合併指引</h3>
+            <p>透過 PowerPoint 內建功能，將分組簡報無損合併</p>
+          </div>
+          
+          <div class="guide-steps-container">
+            <div class="guide-step">
+              <div class="step-badge">1</div>
+              <div class="step-body">
+                <h4>1. NBLM 規劃</h4>
+                <p>將左側的「分組規劃提示詞」貼入 NBLM 對話框。它會自動讀取您筆記本內的化工製程、腐蝕機制、檢修SOP等文件，自動計算總頁數，並回傳多組 <code>=== 【第 X 組簡報生成 Prompt】 ===</code> 的區塊。</p>
+              </div>
+            </div>
+            
+            <div class="guide-step">
+              <div class="step-badge">2</div>
+              <div class="step-body">
+                <h4>2. 分批生成並下載</h4>
+                <ul class="inner-step-list">
+                  <li>複製對話中的 <strong>「第 1 組 Prompt」</strong>，點選 NBLM 內建的 <strong>「建立簡報」</strong> 功能貼上生成，下載為 <code>Part1.pptx</code>。</li>
+                  <li>複製對話中的 <strong>「第 2 組 Prompt」</strong>，同樣在 NBLM 中生成並下載為 <code>Part2.pptx</code>，依此類推。</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="guide-step highlight-step">
+              <div class="step-badge">3</div>
+              <div class="step-body">
+                <h4>3. PowerPoint 完美無損合併 (100% 格式與動畫)</h4>
+                <p>PowerPoint 內建「重複使用投影片」功能，能直接將多個檔案合併，且<strong>完全不跑版，能保留所有動畫與母片樣式</strong>：</p>
+                <ol class="step-ol">
+                  <li><strong>開啟基準簡報</strong>：先用 PowerPoint 開啟 <code>Part1.pptx</code>。</li>
+                  <li><strong>開啟合併面板</strong>：選取上方工具列 <strong>「常用」</strong> ➔ 點擊 <strong>「新增投影片」</strong> 旁的下拉箭頭 ➔ 點選 <strong>「重複使用投影片」</strong> (Reuse Slides)。</li>
+                  <li><strong>選取檔案</strong>：在右側開啟的窗格中點擊 <strong>「瀏覽」</strong>，選取下載的 <code>Part2.pptx</code>。</li>
+                  <li><strong>💡 關鍵步驟</strong>：在右側窗格最下方，<strong>【務必勾選】➔「保留來源格式」 (Keep source formatting)</strong>。</li>
+                  <li><strong>一鍵插入</strong>：在投影片縮圖上按滑鼠右鍵 ➔ 選取 <strong>「插入所有投影片」</strong>。</li>
+                  <li><strong>存檔完成</strong>：重複上述步驟插入 Part3、Part4 等，另存新檔即完成！</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- TAB 3: VIDEO SUMMARY WORKSPACE -->
+    <div id="video-summary-workspace" class="workspace-tab-content">
+      <div class="main-grid">
+        
+        <!-- LEFT PANEL: PARAMETERS -->
+        <section class="panel-left">
+          
+          <!-- 01 Video Topic -->
+          <div class="card card-topic">
+            <div class="card-num">01</div>
+            <div class="card-header-text">
+              <h3>影片摘要主題</h3>
+              <p>輸入影片名稱或主題描述，並可使用下方快速標籤</p>
+            </div>
+            
+            <div class="input-group">
+              <input type="text" id="video-topic-input" placeholder="例如：離心泵浦日常巡檢與異常聲音診斷示範影音..." autocomplete="off">
+            </div>
+            
+            <div class="tags-container">
+              <span class="tag-pill video-tag-pill" data-tag="製程操作">⚗️ 製程操作</span>
+              <span class="tag-pill video-tag-pill" data-tag="設備保養">⚙️ 設備保養</span>
+              <span class="tag-pill video-tag-pill" data-tag="安全培訓">🚨 安全培訓</span>
+              <span class="tag-pill video-tag-pill" data-tag="技術講座">📚 技術講座</span>
+              <span class="tag-pill video-tag-pill" data-tag="現場巡檢">🔍 現場巡檢</span>
+            </div>
+          </div>
+
+          <!-- 02 Video Focus Mode -->
+          <div class="card card-video-focus">
+            <div class="card-num">02</div>
+            <div class="card-header-text">
+              <h3>影片類型與擷取焦點</h3>
+              <p>設定提示詞，使 AI 重點擷取影片中的特定技術細節</p>
+            </div>
+            
+            <div class="audience-grid" style="grid-template-columns: repeat(4, 1fr);">
+              <label class="audience-option">
+                <input type="radio" name="video-focus" value="技術實操示範" checked>
+                <div class="option-content">
+                  <span class="option-icon">🔧</span>
+                  <span class="option-title">實操示範</span>
+                  <span class="option-desc">工具使用、操作手感、動作細節</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="video-focus" value="化工/製程講解">
+                <div class="option-content">
+                  <span class="option-icon">⚗️</span>
+                  <span class="option-title">製程講解</span>
+                  <span class="option-desc">流體流程、閥門開度、自控邏輯</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="video-focus" value="安全與事故還原">
+                <div class="option-content">
+                  <span class="option-icon">🚨</span>
+                  <span class="option-title">安全還原</span>
+                  <span class="option-desc">異常徵兆、逃生避險、應急動作</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="video-focus" value="學術/技術講座">
+                <div class="option-content">
+                  <span class="option-icon">📚</span>
+                  <span class="option-title">技術講座</span>
+                  <span class="option-desc">理論大綱、數據分析、推導結論</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 03 Output Format -->
+          <div class="card card-video-format">
+            <div class="card-num">03</div>
+            <div class="card-header-text">
+              <h3>摘要輸出格式</h3>
+              <p>選擇生成的筆記結構與排版樣式</p>
+            </div>
+            
+            <div class="rhythm-grid" style="grid-template-columns: repeat(3, 1fr);">
+              <label class="rhythm-option">
+                <input type="radio" name="video-format" value="結構化時間軸筆記" checked>
+                <div class="rhythm-content">
+                  <div class="curve-visual" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">⏱️</div>
+                  <span class="rhythm-title">時間軸筆記</span>
+                  <span class="rhythm-desc">標示 Timeline 與動作重點</span>
+                </div>
+              </label>
+              
+              <label class="rhythm-option">
+                <input type="radio" name="video-format" value="操作重點與 SOP 清單">
+                <div class="rhythm-content">
+                  <div class="curve-visual" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">📋</div>
+                  <span class="rhythm-title">SOP 清單</span>
+                  <span class="rhythm-desc">口語動作解構為標準 Checklist</span>
+                </div>
+              </label>
+              
+              <label class="rhythm-option">
+                <input type="radio" name="video-format" value="問答與培訓考核庫">
+                <div class="rhythm-content">
+                  <div class="curve-visual" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">🎓</div>
+                  <span class="rhythm-title">問答考核庫</span>
+                  <span class="rhythm-desc">生成 5 題考核 Q&A 與依據</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- RIGHT PANEL: PRESETS & MONITOR -->
+        <section class="panel-right">
+          
+          <!-- Video Presets -->
+          <div class="card card-presets">
+            <div class="presets-header">
+              <span class="preset-icon" style="color: #a55eea; filter: drop-shadow(0 0 5px rgba(165, 94, 234, 0.3));">📹</span>
+              <h3>影片預設模板 · VIDEO PRESETS</h3>
+            </div>
+            
+            <div class="preset-section">
+              <span class="preset-section-title">VIDEO TRANSCRIPT PRESETS</span>
+              <div class="presets-grid presets-grid-single">
+                <button class="preset-btn" id="video-preset-operation" style="border-left: 3px solid var(--accent-purple);">
+                  <span class="btn-icon" style="color: var(--accent-purple);">⚗️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">製程閥門操作與流程說明影片</span>
+                    <span class="btn-subtitle">製程講解 + SOP 清單 ➔ 轉化口語為標準指引</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="video-preset-safety" style="border-left: 3px solid var(--accent-purple);">
+                  <span class="btn-icon" style="color: var(--accent-purple);">🚨</span>
+                  <div class="btn-info">
+                    <span class="btn-title">現場泵浦洩漏火警應急處置錄影</span>
+                    <span class="btn-subtitle">安全還原 + 時間軸筆記 ➔ 還原黃金應變時序</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="video-preset-training" style="border-left: 3px solid var(--accent-purple);">
+                  <span class="btn-icon" style="color: var(--accent-purple);">🎓</span>
+                  <div class="btn-info">
+                    <span class="btn-title">轉動設備振動分析與故障診斷講座</span>
+                    <span class="btn-subtitle">技術講座 + 問答考核庫 ➔ 生成培訓課後測驗</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Monitor -->
+          <div class="card card-monitor">
+            <div class="monitor-header">
+              <div class="monitor-status">
+                <span class="pulse-dot pulse-dot-purple"></span>
+                <h3>影片摘要提示詞輸出 · MONITOR</h3>
+              </div>
+            </div>
+            
+            <div class="monitor-area">
+              <pre id="video-prompt-output" class="prompt-text">填好設定，即可在此監控生成的影片摘要提示詞...</pre>
+            </div>
+            
+            <div class="monitor-actions">
+              <button id="copy-video-btn" class="action-btn copy-btn copy-btn-video">
+                <span class="btn-text">📋 複製影片摘要提示詞</span>
+              </button>
+              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+                <span>🚀 開啟 NotebookLM</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+        
+      </div>
+    </div>
+
+  </div> <!-- Closes container -->
+
+  <script src="app.js"></script>
+</body>
+</html>
