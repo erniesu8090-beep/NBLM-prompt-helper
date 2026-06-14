@@ -11,7 +11,10 @@ const TAG_PRESET_MAP = {
   "安全排查": "industrial_safety",
   "技術規格": "tech_doc",
   "員工SOP": "sop_training",
-  "資安宣導": "security"
+  "資安宣導": "security",
+  "命理運勢": "bazi",
+  "投資理財": "stock",
+  "職涯轉型": "career"
 };
 
 // Preset Templates Database (Specifically curated for industrial, chemistry and corporate training)
