@@ -48,6 +48,10 @@
         <span class="tab-icon">📹</span>
         <span class="tab-text">影片摘要提示詞</span>
       </button>
+      <button class="tab-btn" data-tab="slide-narrative">
+        <span class="tab-icon">🗣️</span>
+        <span class="tab-text">簡報講解口白</span>
+      </button>
     </nav>
 
     <!-- WORKSPACE TABS CONTENT -->
@@ -803,6 +807,193 @@
             <div class="monitor-actions">
               <button id="copy-video-btn" class="action-btn copy-btn copy-btn-video">
                 <span class="btn-text">📋 複製影片總覽指令</span>
+              </button>
+              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+                <span>🚀 開啟 NotebookLM</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+        
+      </div>
+    </div>
+
+    <!-- TAB 4: SLIDE NARRATIVE WORKSPACE -->
+    <div id="slide-narrative-workspace" class="workspace-tab-content">
+      <div class="main-grid">
+        
+        <!-- LEFT PANEL: PARAMETERS -->
+        <section class="panel-left">
+          
+          <!-- 01 Slide Topic -->
+          <div class="card card-topic">
+            <div class="card-num" style="background: linear-gradient(135deg, #f0932b, #ffbe76); box-shadow: 0 0 10px rgba(240, 147, 43, 0.4);">01</div>
+            <div class="card-header-text">
+              <h3>簡報主題與名稱</h3>
+              <p>設定簡報的主題或點擊下方快速標籤</p>
+            </div>
+            
+            <div class="input-group">
+              <input type="text" id="narrative-topic-input" placeholder="例如：離心式轉動設備機械振動分析、公司年度營運報告..." autocomplete="off">
+            </div>
+            
+            <div class="tags-container">
+              <span class="tag-pill narrative-tag-pill" data-tag="科普教學">🎓 科普教學</span>
+              <span class="tag-pill narrative-tag-pill" data-tag="工業技術">⚙️ 工業技術</span>
+              <span class="tag-pill narrative-tag-pill" data-tag="商業簡報">📊 商業簡報</span>
+              <span class="tag-pill narrative-tag-pill" data-tag="理財分享">📈 理財分享</span>
+              <span class="tag-pill narrative-tag-pill" data-tag="產品介紹">📦 產品介紹</span>
+            </div>
+          </div>
+
+          <!-- 02 Presenter Role -->
+          <div class="card card-narrative-role">
+            <div class="card-num" style="background: linear-gradient(135deg, #f0932b, #ffbe76); box-shadow: 0 0 10px rgba(240, 147, 43, 0.4);">02</div>
+            <div class="card-header-text">
+              <h3>講解人角色與專業人設</h3>
+              <p>設定投影片講解者的角色身份與專業背景</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label>角色職位 / 稱謂 (Role)</label>
+                <select id="narrative-role-select">
+                  <option value="技術專家 (工程師/科學家)" selected>技術專家 (工程師/科學家)</option>
+                  <option value="通識科普講師">通識科普講師</option>
+                  <option value="資深產品經理 (PM)">資深產品經理 (PM)</option>
+                  <option value="理財與投資顧問">理財與投資顧問</option>
+                  <option value="說故事大師 / 歷史說書人">說故事大師 / 歷史說書人</option>
+                  <option value="自訂人設">自訂人設 (於下方手動輸入)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <label>自訂角色名稱 (若選自訂人設)</label>
+                <input type="text" id="narrative-role-custom" placeholder="例如：資深法務顧問、行銷總監" value="">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <label>專業背景經歷 (Experience)</label>
+                <input type="text" id="narrative-background-input" placeholder="例如：擁有數十年現場操作經驗、擅長以幽默方式轉譯專業知識" value="擁有豐富的現場實操與理論分析經驗">
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 Tone & Length -->
+          <div class="card card-narrative-tone">
+            <div class="card-num" style="background: linear-gradient(135deg, #f0932b, #ffbe76); box-shadow: 0 0 10px rgba(240, 147, 43, 0.4);">03</div>
+            <div class="card-header-text">
+              <h3>口語調性與字數限制</h3>
+              <p>調整講解時的說話口吻與每一頁投影片的口白字數</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label>講解口白調性 (Tone)</label>
+                <select id="narrative-tone-select">
+                  <option value="專業嚴謹、邏輯清晰、用語精確" selected>專業嚴謹 - 邏輯清晰、用語精確</option>
+                  <option value="生動風趣、通俗易懂、善用日常比喻">生動風趣 - 通俗易懂、善用日常比喻</option>
+                  <option value="故事引導、引人入勝、情感豐富">故事引導 - 引人入勝、情感豐富</option>
+                  <option value="白話易懂、循序漸進、適合初學者">白話易懂 - 循序漸進、適合初學者</option>
+                  <option value="具說服力、直擊痛點、極具商業氣場">具說服力 - 直擊痛點、極具商業氣場</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label>單頁口白字數限制 (Length)</label>
+                <select id="narrative-length-select">
+                  <option value="150字以內 (極簡精煉，約30秒解說)">150字以內 (極簡精煉)</option>
+                  <option value="150-300字 (結構適中，約1-2分鐘解說)" selected>150-300字 (結構適中)</option>
+                  <option value="300-500字 (詳細解說，包含背景推導)">300-500字 (詳細解說)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04 Structure & Directives -->
+          <div class="card card-narrative-guidelines">
+            <div class="card-num" style="background: linear-gradient(135deg, #f0932b, #ffbe76); box-shadow: 0 0 10px rgba(240, 147, 43, 0.4);">04</div>
+            <div class="card-header-text">
+              <h3>輸出結構與客製微調</h3>
+              <p>設定腳本的排版結構與特定微調要求</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label>口白輸出結構 (Structure)</label>
+                <select id="narrative-structure-select">
+                  <option value="逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)" selected>逐頁解說 + 重點整理</option>
+                  <option value="逐頁解說 + 轉場引導 (包含上一頁到下一頁的口語轉接句)">逐頁解說 + 轉場引導</option>
+                  <option value="純口白逐字稿 (無多餘標題標記，適合錄音直接朗讀)">純口白逐字稿</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <label>客製微調指令 / 特定要求 (Directives)</label>
+                <textarea id="narrative-directives-input" rows="3" placeholder="例如：每一頁口白開頭需加上『第 X 頁...』；或針對公式推導頁加強步驟解說。"></textarea>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- RIGHT PANEL: PRESETS & MONITOR -->
+        <section class="panel-right">
+          
+          <!-- Presets -->
+          <div class="card card-presets">
+            <div class="presets-header">
+              <span class="preset-icon" style="color: #f0932b; filter: drop-shadow(0 0 5px rgba(240, 147, 43, 0.3));">🗣️</span>
+              <h3>口白規劃預設模板 · NARRATIVE PRESETS</h3>
+            </div>
+            
+            <div class="preset-section">
+              <span class="preset-section-title">SLIDE NARRATIVE PRESETS</span>
+              <div class="presets-grid presets-grid-single">
+                <button class="preset-btn" id="narrative-preset-technical" style="border-left: 3px solid #f0932b;">
+                  <span class="btn-icon" style="color: #f0932b;">⚙️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">工業技術培訓簡報口白 (專業嚴謹)</span>
+                    <span class="btn-subtitle">技術專家 + 專業嚴謹 ➔ 聚焦操作要領與轉場引導</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="narrative-preset-science" style="border-left: 3px solid #f0932b;">
+                  <span class="btn-icon" style="color: #f0932b;">🎓</span>
+                  <div class="btn-info">
+                    <span class="btn-title">科普教育教學簡報口白 (生動風趣)</span>
+                    <span class="btn-subtitle">通識講師 + 生動風趣 ➔ 用日常比喻吸引學員</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="narrative-preset-business" style="border-left: 3px solid #f0932b;">
+                  <span class="btn-icon" style="color: #f0932b;">📊</span>
+                  <div class="btn-info">
+                    <span class="btn-title">產品推廣商業簡報口白 (犀利說服)</span>
+                    <span class="btn-subtitle">產品經理 + 犀利說服 ➔ 聚焦市場痛點與價值傳遞</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monitor -->
+          <div class="card card-monitor">
+            <div class="monitor-header">
+              <div class="monitor-status">
+                <span class="pulse-dot" style="background-color: #f0932b; box-shadow: 0 0 8px #f0932b;"></span>
+                <h3>簡報講解口白指令輸出 · MONITOR</h3>
+              </div>
+            </div>
+            
+            <div class="monitor-area">
+              <pre id="narrative-prompt-output" class="prompt-text">填好設定，即可在此監控生成的簡報講解口白指令...</pre>
+            </div>
+            
+            <div class="monitor-actions">
+              <button id="copy-narrative-btn" class="action-btn copy-btn copy-btn-gold">
+                <span class="btn-text">📋 複製簡報口白指令</span>
               </button>
               <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>

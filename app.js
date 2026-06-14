@@ -914,6 +914,144 @@ function init() {
   // Initial load for video workspace
   loadVideoPreset("operation");
 
+  // SLIDE NARRATIVE WORKSPACE INITIALIZATION
+  const narrativeTopicInput = document.getElementById("narrative-topic-input");
+  const narrativeRoleSelect = document.getElementById("narrative-role-select");
+  const narrativeRoleCustom = document.getElementById("narrative-role-custom");
+  const narrativeBackgroundInput = document.getElementById("narrative-background-input");
+  const narrativeToneSelect = document.getElementById("narrative-tone-select");
+  const narrativeLengthSelect = document.getElementById("narrative-length-select");
+  const narrativeStructureSelect = document.getElementById("narrative-structure-select");
+  const narrativeDirectivesInput = document.getElementById("narrative-directives-input");
+
+  const narrativeInputs = [
+    narrativeTopicInput, narrativeRoleSelect, narrativeRoleCustom, narrativeBackgroundInput,
+    narrativeToneSelect, narrativeLengthSelect, narrativeStructureSelect, narrativeDirectivesInput
+  ];
+
+  narrativeInputs.forEach(input => {
+    if (input) {
+      input.addEventListener("input", updateNarrativePrompt);
+      input.addEventListener("change", updateNarrativePrompt);
+    }
+  });
+
+  const narrativeTagPills = document.querySelectorAll(".narrative-tag-pill");
+  const NARRATIVE_TAG_TOPICS = {
+    "科普教學": "關於「大自然的水循環與氣候變遷」科普教學簡報",
+    "工業技術": "關於「化工廠精餾系統操作優化與安全防護」技術培訓簡報",
+    "商業簡報": "關於「AI 創新科技在智慧零售的應用與未來展望」商業提案簡報",
+    "理財分享": "關於「存股心法與家庭資產配置複利效應」理財規劃簡報",
+    "產品介紹": "關於「最新旗艦降噪藍牙耳機規格與功能評測」產品開箱簡報"
+  };
+
+  narrativeTagPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      narrativeTagPills.forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      
+      const tagValue = pill.getAttribute("data-tag");
+      if (narrativeTopicInput && NARRATIVE_TAG_TOPICS[tagValue]) {
+        narrativeTopicInput.value = NARRATIVE_TAG_TOPICS[tagValue];
+        updateNarrativePrompt();
+      }
+    });
+  });
+
+  const NARRATIVE_PRESETS = {
+    technical: {
+      topic: "化工廠精餾系統底重沸器管線操作與閥門切換技術簡報",
+      role: "技術專家 (工程師/科學家)",
+      custom: "",
+      background: "擁有 20 年一線精餾塔操作運轉與 DCS 調試經驗",
+      tone: "專業嚴謹、邏輯清晰、用語精確",
+      length: "150-300字 (結構適中，約1-2分鐘解說)",
+      structure: "逐頁解說 + 轉場引導 (包含上一頁到下一頁的口語轉接句)",
+      directives: "特別針對製程流程圖頁面（PFD）加強管線介質與閥門開啟先後順序的口說引導，口白要有一線人員的務實口吻。"
+    },
+    science: {
+      topic: "大自然的水循環與全球氣候變遷科學教學簡報",
+      role: "通識科普講師",
+      custom: "",
+      background: "擅長將深奧科學原理解碼為日常趣味比喻的科普作家",
+      tone: "生動風趣、通俗易懂、善用日常比喻",
+      length: "150-300字 (結構適中，約1-2分鐘解說)",
+      structure: "逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)",
+      directives: "多用「想像一下...」或問句開頭，將蒸發、凝結比喻成煮開水與冰水杯壁的露水，適合國中學生聽講。"
+    },
+    business: {
+      topic: "AI 創新科技在智慧零售人流分析系統的應用商業簡報",
+      role: "資深產品經理 (PM)",
+      custom: "",
+      background: "具備多年 SaaS 產品規劃與企業客戶提案經驗的資深經理",
+      tone: "具說服力、直擊痛點、極具商業氣場",
+      length: "150字以內 (極簡精煉，約30秒解說)",
+      structure: "逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)",
+      directives: "簡報口白聚焦在產品如何幫客戶『降低 30% 損耗率』與『提升 15% 提袋率』，用詞明快精煉，直擊商業價值。"
+    }
+  };
+
+  function loadNarrativePreset(key) {
+    const preset = NARRATIVE_PRESETS[key];
+    if (!preset) return;
+
+    if (narrativeTopicInput) narrativeTopicInput.value = preset.topic;
+    if (narrativeRoleSelect) narrativeRoleSelect.value = preset.role;
+    if (narrativeRoleCustom) narrativeRoleCustom.value = preset.custom;
+    if (narrativeBackgroundInput) narrativeBackgroundInput.value = preset.background;
+    if (narrativeToneSelect) narrativeToneSelect.value = preset.tone;
+    if (narrativeLengthSelect) narrativeLengthSelect.value = preset.length;
+    if (narrativeStructureSelect) narrativeStructureSelect.value = preset.structure;
+    if (narrativeDirectivesInput) narrativeDirectivesInput.value = preset.directives;
+
+    // Toggle active style of preset buttons
+    ["technical", "science", "business"].forEach(k => {
+      const btn = document.getElementById(`narrative-preset-${k}`);
+      if (btn) {
+        if (k === key) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      }
+    });
+
+    updateNarrativePrompt();
+  }
+
+  ["technical", "science", "business"].forEach(key => {
+    const btn = document.getElementById(`narrative-preset-${key}`);
+    if (btn) {
+      btn.addEventListener("click", () => loadNarrativePreset(key));
+    }
+  });
+
+  const copyNarrativeBtn = document.getElementById("copy-narrative-btn");
+  const narrativePromptOutput = document.getElementById("narrative-prompt-output");
+  if (copyNarrativeBtn && narrativePromptOutput) {
+    copyNarrativeBtn.addEventListener("click", () => {
+      const textToCopy = narrativePromptOutput.textContent;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          copyNarrativeBtn.classList.add("success");
+          const origText = copyNarrativeBtn.querySelector(".btn-text").textContent;
+          copyNarrativeBtn.querySelector(".btn-text").textContent = "✓ 已複製簡報口白指令！";
+          
+          setTimeout(() => {
+            copyNarrativeBtn.classList.remove("success");
+            copyNarrativeBtn.querySelector(".btn-text").textContent = origText;
+          }, 2000);
+        })
+        .catch(err => {
+          console.error("複製失敗：", err);
+          alert("複製失敗，請手動選取文字複製。");
+        });
+    });
+  }
+
+  // Initial load for narrative workspace
+  loadNarrativePreset("technical");
+
   // Load default preset (chemical_process) on load
   loadPreset("chemical_process");
 }
@@ -994,6 +1132,71 @@ ${styleDetail}
 - 嚴格僅使用上傳文檔中的事實與數據，不得虛構或捏造影片內容。`;
 
   const outputEl = document.getElementById("video-prompt-output");
+  if (outputEl) {
+    outputEl.textContent = finalPrompt;
+  }
+}
+
+// Global update function for Slide Narrative Prompt
+function updateNarrativePrompt() {
+  const topicInputEl = document.getElementById("narrative-topic-input");
+  const topic = (topicInputEl ? topicInputEl.value.trim() : "") || "未設定簡報主題";
+  const roleSelectEl = document.getElementById("narrative-role-select");
+  const roleVal = roleSelectEl ? roleSelectEl.value : "技術專家 (工程師/科學家)";
+  const roleCustomEl = document.getElementById("narrative-role-custom");
+  const roleCustom = roleCustomEl ? roleCustomEl.value.trim() : "";
+  const role = roleVal === "自訂人設" && roleCustom ? roleCustom : roleVal;
+
+  const bgInputEl = document.getElementById("narrative-background-input");
+  const background = (bgInputEl ? bgInputEl.value.trim() : "") || "未設定專業背景";
+  const toneSelectEl = document.getElementById("narrative-tone-select");
+  const tone = toneSelectEl ? toneSelectEl.value : "專業嚴謹、邏輯清晰、用語精確";
+  const lengthSelectEl = document.getElementById("narrative-length-select");
+  const length = lengthSelectEl ? lengthSelectEl.value : "150-300字 (結構適中)";
+  const structureSelectEl = document.getElementById("narrative-structure-select");
+  const structure = structureSelectEl ? structureSelectEl.value : "逐頁解說 + 重點整理";
+  const directivesInputEl = document.getElementById("narrative-directives-input");
+  const directives = (directivesInputEl ? directivesInputEl.value.trim() : "") || "無特殊微調指令";
+
+  let structureGuide = "";
+  if (structure.includes("重點整理")) {
+    structureGuide = `請在每頁的口白下方，以條列式列出 3 個「本頁核心重點整理 (Key Takeaways)」，方便簡報錄製者快速抓到核心要點。`;
+  } else if (structure.includes("轉場引導")) {
+    structureGuide = `請在每頁的口白結尾處，自然融入一兩句「轉場引導句 (Transition Script)」，能順暢銜接下一頁簡報的主題內容，讓簡報錄影的語氣聽起來自然流暢、一氣成。`;
+  } else {
+    structureGuide = `請僅輸出純口白逐字稿。無須輸出多餘的標題標記、重點整理或轉場說明，以利錄音設備直接朗讀或轉換為旁白音軌。`;
+  }
+
+  const finalPrompt = `你是一位簡報講解專家與幕後口白配音導演。請閱讀我所提供的來源簡報文檔（或簡報內容大綱），並針對主題「${topic}」為我產出高品質、符合特定角色人設與口說調性的簡報講解口白與腳本。
+
+━━━━━━━━ 🎙️ NOTEBOOKLM SLIDE NARRATIVE PROMPT ━━━━━━━
+
+【一、講解者角色人設】
+- 角色身份：${role}
+- 專業背景經歷：${background}
+- 口語調性風格：${tone} (講解時請嚴格以此風格發言)
+
+【二、簡報口白設定與要求】
+- 簡報主題：${topic}
+- 單頁字數長度：${length}
+- 口白輸出結構：${structure}
+
+【三、結構引導要求】
+請針對來源簡報中的每一頁（從第 1 頁封面開始，依序至最後一頁），提供對應的口白腳本。每頁的格式請依據以下要求輸出：
+1. 【頁面標記】：請清晰標示「[Slide X: 該頁標題/主題]」。
+2. 【講解口白】：提供符合人設、調性與字數限制的解說逐字稿。
+3. 【結構要求】：
+   ${structureGuide}
+
+【四、客製微調指令】
+- 敘事與微調指示：
+  ${directives}
+
+【五、輸出約束】
+- 所有講解口白均應使用繁體中文（台灣）呈現，語氣要像是一對口頭報告般自然、生動且具口語感。
+- 嚴格僅依據上傳的簡報內容大綱進行解說與提煉，不可憑空捏造簡報中未提及的實證數據或事實。`;
+
+  const outputEl = document.getElementById("narrative-prompt-output");
   if (outputEl) {
     outputEl.textContent = finalPrompt;
   }

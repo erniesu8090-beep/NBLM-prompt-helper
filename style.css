@@ -1098,3 +1098,34 @@ body {
     padding: 12px;
   }
 }
+
+/* Slide Narrative Workspace Neon Gold Theme Extensions */
+.tab-btn[data-tab="slide-narrative"].active {
+  background: linear-gradient(135deg, #f0932b, #ffbe76);
+  border-color: #f0932b;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(240, 147, 43, 0.35);
+}
+
+.preset-btn[id^="narrative-preset-"].active {
+  background: rgba(240, 147, 43, 0.08);
+  border-color: #f0932b;
+  box-shadow: 0 0 12px rgba(240, 147, 43, 0.25);
+}
+.preset-btn[id^="narrative-preset-"].active .btn-icon {
+  border-color: #f0932b;
+  color: #f0932b;
+}
+
+.narrative-tag-pill.active {
+  background: rgba(240, 147, 43, 0.15);
+  border-color: #f0932b;
+  color: #ffb300;
+  box-shadow: 0 0 10px rgba(240, 147, 43, 0.2);
+}
+
+.copy-btn-gold.success {
+  background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+  border-color: #27ae60 !important;
+  box-shadow: 0 0 15px rgba(39, 174, 96, 0.4) !important;
+}
