@@ -848,45 +848,73 @@ document.addEventListener("DOMContentLoaded", init);
 function updateVideoPrompt() {
   const topicInputEl = document.getElementById("video-topic-input");
   const topic = (topicInputEl ? topicInputEl.value.trim() : "") || "未設定影片主題";
-  const focus = getRadioValue("video-focus") || "技術實操示範";
-  const format = getRadioValue("video-format") || "結構化時間軸筆記";
-  
-  let formatGuide = "";
-  if (format === "結構化時間軸筆記") {
-    formatGuide = `1. 【精確時間大綱】：整理出影片的時間軸大綱（如 00:00 - 05:00 講述何物），並用時間戳標記每個核心重點。
-2. 【動作與講述對照】：記錄在特定時間點一線操作員的具體動作，以及講述者的技術提醒，特別指出操作時的細部手感或觀察方法（如壓力表指針跳動、聽覺聲響特徵）。`;
-  } else if (format === "操作重點與 SOP 清單") {
-    formatGuide = `1. 【口語動作標準化】：將影片中講述者或操作者的口語化解說，轉譯並整理為標準化的一步步操作步驟（Checklist）。
-2. 【安全注意事項與防呆】：明確列出每一步操作所需的防護具（PPE）、安全聯鎖閥門狀態，以及若操作失誤可能引發的後果（Poka-Yoke）。`;
+  const formatSelectEl = document.getElementById("video-format-select");
+  const format = formatSelectEl ? formatSelectEl.value : "Explainer (說明解說)";
+  const audienceInputEl = document.getElementById("video-audience-input");
+  const audience = (audienceInputEl ? audienceInputEl.value.trim() : "") || "一般大眾";
+  const style = getRadioValue("video-style") || "Watercolor (水彩)";
+  const lengthSelectEl = document.getElementById("video-length-select");
+  const length = lengthSelectEl ? lengthSelectEl.value : "10-12 分鐘";
+  const directivesInputEl = document.getElementById("video-directives-input");
+  const directives = (directivesInputEl ? directivesInputEl.value.trim() : "") || "無特殊微調指令";
+
+  let formatDetail = "";
+  if (format.includes("Explainer")) {
+    formatDetail = `【影片格式：Explainer 說明解說模式】
+- 敘事要求：著重於深入、結構化且具邏輯性的觀念解說。針對影片逐字稿中的關鍵背景知識進行脈絡梳理，由淺入深說明「為什麼」與「怎麼做」，避免碎片化的簡短條列。
+- 節奏安排：語氣沉穩有條理，給予觀眾足夠的吸收時間，並確保專有名詞有清晰定義與例證說明。`;
   } else {
-    formatGuide = `1. 【核心知識問答庫】：根據影片中講解的理論或操作示範，設計 5-8 題員工培訓考核問答題。
-2. 【答案依據與解析】：每題皆需提供精確的答案，並指出該答案在影片逐字稿中的具體提及時間點或說法依據，方便培訓主管批改與核對。`;
+    formatDetail = `【影片格式：Brief 摘要速覽模式】
+- 敘事要求：精簡高效，以極高密度濃縮影片核心重點。開門見山直接切入核心結論，列出關鍵要點（Key Takeaways），不拖泥帶水，方便觀眾快速獲取核心資訊。
+- 節奏安排：節奏明快、語調簡練，將龐雜的逐字稿內容提煉成一目了然的摘要金句與重點清單。`;
   }
 
-  const finalPrompt = `你是一位頂尖的工業安全與技術培訓專家。請深入閱讀並分析我所上傳的影片逐字稿（Video Transcript），並針對主題「${topic}」進行高度精煉與結構化的解碼，產出適合「${format}」的優質學習參考文檔。
+  let styleDetail = "";
+  if (style.includes("Watercolor")) {
+    styleDetail = `- 影像風格：指定採用「Watercolor (水彩)」風格。
+- 視覺特徵：利用 Nano Banana 模型生成柔和的水彩筆觸、漸層渲染的色彩以及富有藝術質感的手繪插圖分鏡，整體畫面要呈現出溫馨、寫意且具人文感的美學視覺。`;
+  } else if (style.includes("Papercraft")) {
+    styleDetail = `- 影像風格：指定採用「Papercraft (紙藝)」風格。
+- 視覺特徵：利用 Nano Banana 模型生成 3D 立體摺紙、紙張重疊的陰影明暗以及精緻的紙張紋理與邊緣剪裁感，營造出充滿工藝感、立體且新穎的分鏡視覺特徵。`;
+  } else if (style.includes("Anime")) {
+    styleDetail = `- 影像風格：指定採用「Anime (動漫風)」風格.
+- 視覺特徵：利用 Nano Banana 模型生成日系二次元動漫插圖，以明亮通透的色彩、精緻乾淨的線條和動感的構圖，營造出充滿青春活力與敘事表現力的美學畫面。`;
+  } else if (style.includes("Whiteboard")) {
+    styleDetail = `- 影像風格：指定採用「Whiteboard (白板)」風格。
+- 視覺特徵：利用 Nano Banana 模型生成簡潔生動的手繪黑板/白板塗鴉、圖示與流程指示箭頭，模擬真人在白板上邊講邊畫的現場解說感，視覺直觀且易於理解。`;
+  } else if (style.includes("Retro Print")) {
+    styleDetail = `- 影像風格：指定採用「Retro Print (復古印刷)」風格。
+- 視覺特徵：利用 Nano Banana 模型生成帶有網點紋理、粗獷套色印痕與懷舊偏色的半色調質感畫面，模擬老式海報或舊書插圖，呈現濃郁的時代感與經典設計風格。`;
+  } else if (style.includes("Heritage")) {
+    styleDetail = `- 影像風格：指定採用「Heritage (古典)」風格。
+- 視覺特徵：利用 Nano Banana 模型生成高雅端莊的歷史古典視覺，採用羊皮紙般的古樸色調、細膩的復古鋼筆線描插畫與沉穩的暗色系配色，展現深厚的文化底蘊與權威質感。`;
+  }
 
-━━━━━━━━ 📹 NBLM VIDEO TRANSCRIPT SUMMARIZER ━━━━━━━
+  const finalPrompt = `你是一位專業的 NotebookLM 影片總覽 (Video Overviews) 生成專家。請為我即將生成的教學影片規劃一套符合 Nano Banana 視覺生成與語音合成的客製化引導語。請嚴格依據我上傳的參考資料與影片逐字稿，產出符合以下條件的影片腳本、分鏡引導與旁白大綱：
 
-【一、影片分析主題】
-- 影片名稱/核心概念：${topic}
-- 影片擷取焦點：${focus}
-- 摘要輸出格式：${format}
+━━━━━━━━ 📹 NOTEBOOKLM VIDEO OVERVIEWS INSTRUCTION ━━━━━━━
 
-【二、擷取與解說焦點要求】
-- 本影片為「${focus}」類型影片。請在閱讀逐字稿時，重點擷取：
-  ${focus === "技術實操示範" ? "- 一線人員的具體操作步驟、工器具使用、操作時的物理細節與技巧。" : ""}
-  ${focus === "化工/製程講解" ? "- 製程流程走向、管線連接、閥門開關順序、DCS自控引導與熱力學參數變化。" : ""}
-  ${focus === "安全與事故還原" ? "- 異常情況發生的最初徵兆（視覺、聽覺、參數）、一線人員的應變速度、防禦屏障失效點、應急防護與洩壓動作。" : ""}
-  ${focus === "學術/技術講座" ? "- 技術理論大綱、設備故障機制、頻譜分析數據、診斷結論與科學佐證。" : ""}
-  ${focus === "生活理財/3C評測" ? "- 生活痛點與需求分析、日常理財工具/試算步驟、3C產品或軟體之優缺點分析與購買使用建議。" : ""}
+【一、影片核心主題與設定】
+- 影片主題：${topic}
+- 目標受眾：${audience}
+- 預估時長：${length}
+- 格式模式：${format}
 
-【三、輸出格式與排版要求】
-請嚴格依據「${format}」的格式進行排版與輸出：
-${formatGuide}
+【二、格式與敘事結構要求】
+${formatDetail}
 
-【四、逐字稿名詞校正規則】
-- 語音轉文字逐字稿中常有口語辨識錯誤，請根據上下文以及您深厚的工業/化工知識，自動將錯字校正為正確的工程名詞（例如：將閥門代號、工藝參數代稱、化學品名詞進行修正）。
-- 嚴格僅依據上傳的逐字稿內容進行摘要與提煉，絕不捏造任何未在影片中提及的事實或數據。`;
+【三、Nano Banana 視覺風格指令】
+${styleDetail}
+- 畫面生成原則：影片中的視覺插圖必須與旁白提及的內容在 context 上高度契合，切忌生成與內容無關的裝飾圖案。
+
+【四、客製微調指令 / 敘事焦點】
+- 敘事與微調指示：
+  ${directives}
+
+【五、逐字稿名詞校正與產出約束】
+- 請自動識別逐字稿中可能的語音辨識錯誤，並修正為正確的名詞與術語。
+- 所有影片旁白與畫面文字均應使用繁體中文（台灣）呈現。
+- 嚴格僅使用上傳文檔中的事實與數據，不得虛構或捏造影片內容。`;
 
   const outputEl = document.getElementById("video-prompt-output");
   if (outputEl) {

@@ -621,113 +621,129 @@
           <div class="card card-topic">
             <div class="card-num">01</div>
             <div class="card-header-text">
-              <h3>影片摘要主題</h3>
-              <p>輸入影片名稱或主題描述，並可使用下方快速標籤</p>
+              <h3>影片總覽主題</h3>
+              <p>設定影片生成的核心主題，或點擊下方快速標籤</p>
             </div>
             
             <div class="input-group">
-              <input type="text" id="video-topic-input" placeholder="例如：離心泵浦日常巡檢與異常聲音診斷示範影音..." autocomplete="off">
+              <input type="text" id="video-topic-input" placeholder="例如：世界古文明歷史演進教學、離心泵操作說明..." autocomplete="off">
             </div>
             
             <div class="tags-container">
-              <span class="tag-pill video-tag-pill" data-tag="製程操作">⚗️ 製程操作</span>
-              <span class="tag-pill video-tag-pill" data-tag="設備保養">⚙️ 設備保養</span>
-              <span class="tag-pill video-tag-pill" data-tag="安全培訓">🚨 安全培訓</span>
-              <span class="tag-pill video-tag-pill" data-tag="技術講座">📚 技術講座</span>
-              <span class="tag-pill video-tag-pill" data-tag="現場巡檢">🔍 現場巡檢</span>
+              <span class="tag-pill video-tag-pill" data-tag="歷史科普">📜 歷史科普</span>
+              <span class="tag-pill video-tag-pill" data-tag="製程實操">⚙️ 製程實操</span>
               <span class="tag-pill video-tag-pill" data-tag="日常理財">📈 日常理財</span>
-              <span class="tag-pill video-tag-pill" data-tag="烹飪教學">🍳 烹飪教學</span>
-              <span class="tag-pill video-tag-pill" data-tag="3C開箱">📱 3C開箱</span>
+              <span class="tag-pill video-tag-pill" data-tag="產品開箱">📦 產品開箱</span>
             </div>
           </div>
 
-          <!-- 02 Video Focus Mode -->
-          <div class="card card-video-focus">
+          <!-- 02 Video Format & Audience -->
+          <div class="card card-video-format">
             <div class="card-num">02</div>
             <div class="card-header-text">
-              <h3>影片類型與擷取焦點</h3>
-              <p>設定提示詞，使 AI 重點擷取影片中的特定技術細節</p>
+              <h3>影片格式與目標受眾</h3>
+              <p>設定影片解說深度與對應的受眾定位</p>
             </div>
             
-            <div class="audience-grid" style="grid-template-columns: repeat(5, 1fr);">
+            <div class="form-row">
+              <div class="form-col">
+                <label>觀看格式 (Format)</label>
+                <select id="video-format-select">
+                  <option value="Explainer (說明解說)" selected>Explainer (說明解說) - 結構全面，深入理解脈絡</option>
+                  <option value="Brief (摘要速覽)">Brief (摘要速覽) - 速覽濃縮，快速掌握要點</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label>目標受眾 (Audience)</label>
+                <input type="text" id="video-audience-input" placeholder="例如：國中生、新進員工、一般大眾" value="一般大眾">
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 Visual Style -->
+          <div class="card card-video-style">
+            <div class="card-num">03</div>
+            <div class="card-header-text">
+              <h3>影像視覺風格</h3>
+              <p>選定 Gemini Nano Banana 生成的視覺插圖與分鏡風格</p>
+            </div>
+            
+            <div class="audience-grid" style="grid-template-columns: repeat(3, 1fr);">
               <label class="audience-option">
-                <input type="radio" name="video-focus" value="技術實操示範" checked>
+                <input type="radio" name="video-style" value="Watercolor (水彩)" checked>
                 <div class="option-content">
-                  <span class="option-icon">🔧</span>
-                  <span class="option-title">實操示範</span>
-                  <span class="option-desc">工具使用、操作手感、動作細節</span>
+                  <span class="option-icon">🎨</span>
+                  <span class="option-title">Watercolor 水彩</span>
+                  <span class="option-desc">溫和的水彩插圖與動態質感</span>
                 </div>
               </label>
               <label class="audience-option">
-                <input type="radio" name="video-focus" value="化工/製程講解">
+                <input type="radio" name="video-style" value="Papercraft (紙藝)">
                 <div class="option-content">
-                  <span class="option-icon">⚗️</span>
-                  <span class="option-title">製程講解</span>
-                  <span class="option-desc">流體流程、閥門開度、自控邏輯</span>
+                  <span class="option-icon">✂️</span>
+                  <span class="option-title">Papercraft 紙藝</span>
+                  <span class="option-desc">3D 立體摺紙與工藝雕刻視覺</span>
                 </div>
               </label>
               <label class="audience-option">
-                <input type="radio" name="video-focus" value="安全與事故還原">
+                <input type="radio" name="video-style" value="Anime (動漫風)">
                 <div class="option-content">
-                  <span class="option-icon">🚨</span>
-                  <span class="option-title">安全還原</span>
-                  <span class="option-desc">異常徵兆、逃生避險、應急動作</span>
+                  <span class="option-icon">🌸</span>
+                  <span class="option-title">Anime 動漫風</span>
+                  <span class="option-desc">日系二次元動漫插畫美學</span>
                 </div>
               </label>
               <label class="audience-option">
-                <input type="radio" name="video-focus" value="學術/技術講座">
+                <input type="radio" name="video-style" value="Whiteboard (白板)">
                 <div class="option-content">
-                  <span class="option-icon">📚</span>
-                  <span class="option-title">技術講座</span>
-                  <span class="option-desc">理論大綱、數據分析、推導結論</span>
+                  <span class="option-icon">📋</span>
+                  <span class="option-title">Whiteboard 白板</span>
+                  <span class="option-desc">簡潔活潑的手繪白板說明圖示</span>
                 </div>
               </label>
               <label class="audience-option">
-                <input type="radio" name="video-focus" value="生活理財/3C評測">
+                <input type="radio" name="video-style" value="Retro Print (復古印刷)">
                 <div class="option-content">
-                  <span class="option-icon">🛍️</span>
-                  <span class="option-title">生活/理財</span>
-                  <span class="option-desc">開箱評測、理財工具、日常生活</span>
+                  <span class="option-icon">📻</span>
+                  <span class="option-title">Retro Print 復古</span>
+                  <span class="option-desc">懷舊報紙與網點印刷質感</span>
+                </div>
+              </label>
+              <label class="audience-option">
+                <input type="radio" name="video-style" value="Heritage (古典)">
+                <div class="option-content">
+                  <span class="option-icon">🏛️</span>
+                  <span class="option-title">Heritage 古典</span>
+                  <span class="option-desc">優雅端莊的歷史古典美學風格</span>
                 </div>
               </label>
             </div>
           </div>
 
-          <!-- 03 Output Format -->
-          <div class="card card-video-format">
-            <div class="card-num">03</div>
+          <!-- 04 Video Length & Directives -->
+          <div class="card card-video-directives">
+            <div class="card-num">04</div>
             <div class="card-header-text">
-              <h3>摘要輸出格式</h3>
-              <p>選擇生成的筆記結構與排版樣式</p>
+              <h3>時長與微調指令</h3>
+              <p>設定時長，並輸入自然語言指令微調影片焦點與呈現方式</p>
             </div>
             
-            <div class="rhythm-grid" style="grid-template-columns: repeat(3, 1fr);">
-              <label class="rhythm-option">
-                <input type="radio" name="video-format" value="結構化時間軸筆記" checked>
-                <div class="rhythm-content">
-                  <div class="curve-visual" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">⏱️</div>
-                  <span class="rhythm-title">時間軸筆記</span>
-                  <span class="rhythm-desc">標示 Timeline 與動作重點</span>
-                </div>
-              </label>
-              
-              <label class="rhythm-option">
-                <input type="radio" name="video-format" value="操作重點與 SOP 清單">
-                <div class="rhythm-content">
-                  <div class="curve-visual" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">📋</div>
-                  <span class="rhythm-title">SOP 清單</span>
-                  <span class="rhythm-desc">口語動作解構為標準 Checklist</span>
-                </div>
-              </label>
-              
-              <label class="rhythm-option">
-                <input type="radio" name="video-format" value="問答與培訓考核庫">
-                <div class="rhythm-content">
-                  <div class="curve-visual" style="display: flex; align-items: center; justify-content: center; font-size: 24px;">🎓</div>
-                  <span class="rhythm-title">問答考核庫</span>
-                  <span class="rhythm-desc">生成 5 題考核 Q&A 與依據</span>
-                </div>
-              </label>
+            <div class="form-row">
+              <div class="form-col">
+                <label>預估影片時長 (Length)</label>
+                <select id="video-length-select">
+                  <option value="3-5 分鐘">3-5 分鐘</option>
+                  <option value="5-8 分鐘">5-8 分鐘</option>
+                  <option value="10-12 分鐘" selected>10-12 分鐘</option>
+                  <option value="15 分鐘以上">15 分鐘以上</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <label>客製微調指令 / 敘事焦點 (Directives)</label>
+                <textarea id="video-directives-input" rows="3" placeholder="例如：限定分析 business plan 中的成本章節；或將食譜改編為「易於跟做、聚焦備料與烹調步驟」的流程影片。"></textarea>
+              </div>
             </div>
           </div>
 
@@ -740,45 +756,31 @@
           <div class="card card-presets">
             <div class="presets-header">
               <span class="preset-icon" style="color: #a55eea; filter: drop-shadow(0 0 5px rgba(165, 94, 234, 0.3));">📹</span>
-              <h3>影片預設模板 · VIDEO PRESETS</h3>
+              <h3>影片總覽預設模板 · VIDEO PRESETS</h3>
             </div>
             
             <div class="preset-section">
-              <span class="preset-section-title">VIDEO TRANSCRIPT PRESETS</span>
+              <span class="preset-section-title">VIDEO OVERVIEWS PRESETS</span>
               <div class="presets-grid presets-grid-single">
+                <button class="preset-btn" id="video-preset-history" style="border-left: 3px solid var(--accent-purple);">
+                  <span class="btn-icon" style="color: var(--accent-purple);">📜</span>
+                  <div class="btn-info">
+                    <span class="btn-title">古文明歷史教學影片 (白板風)</span>
+                    <span class="btn-subtitle">國中生教材 + 白板風格 ➔ 證據➔推論歷史思維</span>
+                  </div>
+                </button>
                 <button class="preset-btn" id="video-preset-operation" style="border-left: 3px solid var(--accent-purple);">
-                  <span class="btn-icon" style="color: var(--accent-purple);">⚗️</span>
+                  <span class="btn-icon" style="color: var(--accent-purple);">⚙️</span>
                   <div class="btn-info">
-                    <span class="btn-title">製程閥門操作與流程說明影片</span>
-                    <span class="btn-subtitle">製程講解 + SOP 清單 ➔ 轉化口語為標準指引</span>
-                  </div>
-                </button>
-                <button class="preset-btn" id="video-preset-safety" style="border-left: 3px solid var(--accent-purple);">
-                  <span class="btn-icon" style="color: var(--accent-purple);">🚨</span>
-                  <div class="btn-info">
-                    <span class="btn-title">現場泵浦洩漏火警應急處置錄影</span>
-                    <span class="btn-subtitle">安全還原 + 時間軸筆記 ➔ 還原黃金應變時序</span>
-                  </div>
-                </button>
-                <button class="preset-btn" id="video-preset-training" style="border-left: 3px solid var(--accent-purple);">
-                  <span class="btn-icon" style="color: var(--accent-purple);">🎓</span>
-                  <div class="btn-info">
-                    <span class="btn-title">轉動設備振動分析與故障診斷講座</span>
-                    <span class="btn-subtitle">技術講座 + 問答考核庫 ➔ 生成培訓課後測驗</span>
+                    <span class="btn-title">製程閥門操作說明影片 (紙藝風)</span>
+                    <span class="btn-subtitle">操作培訓 + 紙藝風格 ➔ 聚焦閥門操作與流程</span>
                   </div>
                 </button>
                 <button class="preset-btn" id="video-preset-finance" style="border-left: 3px solid var(--accent-purple);">
                   <span class="btn-icon" style="color: var(--accent-purple);">📈</span>
                   <div class="btn-info">
-                    <span class="btn-title">柴鼠存股分析與日常理財規劃影片</span>
-                    <span class="btn-subtitle">生活/理財 + SOP 清單 ➔ 存股步驟與理財公式</span>
-                  </div>
-                </button>
-                <button class="preset-btn" id="video-preset-cooking" style="border-left: 3px solid var(--accent-purple);">
-                  <span class="btn-icon" style="color: var(--accent-purple);">🍳</span>
-                  <div class="btn-info">
-                    <span class="btn-title">法式紅酒燉牛肉料理實作教學影片</span>
-                    <span class="btn-subtitle">生活/理財 + 時間軸筆記 ➔ 提取步驟與火候細節</span>
+                    <span class="btn-title">存股分析與理財規劃影片 (水彩風)</span>
+                    <span class="btn-subtitle">理財科普 + 水彩風格 ➔ 濃縮核心概念與步驟</span>
                   </div>
                 </button>
               </div>
@@ -790,17 +792,17 @@
             <div class="monitor-header">
               <div class="monitor-status">
                 <span class="pulse-dot pulse-dot-purple"></span>
-                <h3>影片摘要提示詞輸出 · MONITOR</h3>
+                <h3>影片總覽客製化指令輸出 · MONITOR</h3>
               </div>
             </div>
             
             <div class="monitor-area">
-              <pre id="video-prompt-output" class="prompt-text">填好設定，即可在此監控生成的影片摘要提示詞...</pre>
+              <pre id="video-prompt-output" class="prompt-text">填好設定，即可在此監控生成的影片總覽客製指令...</pre>
             </div>
             
             <div class="monitor-actions">
               <button id="copy-video-btn" class="action-btn copy-btn copy-btn-video">
-                <span class="btn-text">📋 複製影片摘要提示詞</span>
+                <span class="btn-text">📋 複製影片總覽指令</span>
               </button>
               <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>
