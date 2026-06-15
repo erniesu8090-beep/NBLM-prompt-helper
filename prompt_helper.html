@@ -53,7 +53,7 @@
       </div>
       <div class="status-badge">
         <span class="status-dot"></span>
-        <span>CONSOLE ACTIVE</span>
+        <span>CONSOLE ACTIVE v2.2.0 (2026/06/15)</span>
       </div>
     </header>
 
@@ -559,23 +559,58 @@
           </div>
           
           <div class="prompt-preview-box">
-            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師。請深入分析目前筆記本中的所有來源文件，並為我規劃一份結構完整的簡報架構，且直接將其拆分為「每組不超過 13 頁」的 NBLM 簡報生成提示詞。
+            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃一份結構完整的簡報架構。你具備以下能力與遵循準則：
 
-請嚴格遵守以下規則：
-1. 頁數評估：每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points），自動評估最適總頁數 N。
-2. 設計規範：定義一組 global_design_specification（配色 Hex Code、氛圍、佈局風格）。
-3. 分組輸出：
-   - 若總頁數大於 13 頁，請按每組最多 13 頁切分（如：第 1 組、第 2 組...）。
-   - 請直接輸出「您可以直接複製並貼入 NBLM 簡報生成功能」的具體 Prompt 內容。
-   - 【關鍵銜接機制】：在第 2 組的 Prompt 開頭，你必須自動融入「第 1 組封面（風格錨點）」與「第 13 頁的詳細內容與視覺描述（邏輯緩衝區）」，命令 NBLM 在生成第 2 組時必須自然銜接第 13 頁的視覺與敘事。
+【角色定位 (Role Definition)】
+- 逆向工程 (Reverse Engineering): 能深入分析來源文件（如 PDF 簡報、視覺圖片），拆解其設計 DNA，包含氛圍、配色邏輯與版面結構。
+- 結構生成 (Structure Generation): 能根據純文字來源，規劃出具備敘事邏輯與視覺張力的簡報架構。
 
-請直接以下方的格式輸出分組結果，方便我一鍵複製：
+【核心任務與行為準則 (Core Tasks & Behavior)】
+無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（允許多個 YAML 文件以 "---" 分隔）。請嚴格遵守以下邏輯：
+- 當要求「分析」來源時：觀察來源的視覺特徵，提取出 global_design_specification（全域設計規範），並歸納其內容邏輯，轉化為 slide_planning（頁面規劃）。
+- 當要求「生成」簡報架構時：根據來源內容的主題，自動定義最適合的 global_design_specification（如：科技主題配深色模式、教育主題配明亮手繪），並將內容拆解為 slide_planning，確保每一頁都有明確的視覺描述 (visual_description) 與生成提示 (generation_prompt)。
+- 頁數評估與分組：
+  - 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points），自動評估最適總頁數 N。
+  - 若總頁數大於 13 頁，請按每組最多 13 頁切分（如：第 1 組、第 2 組...），並輸出多個獨立的 YAML 文件，文件之間以 "---" 符號分隔。
+  - 【關鍵銜接機制】：在第 2 組的 YAML 開頭，你必須在 slide_planning 中自動融入「第 1 組封面（page: 1，風格錨點）」與「第 13 頁的詳細內容與視覺描述（page: 13，邏輯與視覺緩衝區）」，命令 NBLM 在生成第 2 組時必須自然銜接前一組的視覺與敘事。
+- 移除所有來源的項目編號，確保內容簡潔。
+- 生成的簡報內容不要有字體的名字。
 
-=== 【第 1 組簡報生成 Prompt (第 1 - 13 頁)】 ===
-(在此輸出完整提示詞，包含全域設計規範、1-13頁每頁的標題、副標題與視覺描述)
+【YAML 輸出標準格式 (Output Schema)】
+所有輸出內容必須嚴格遵守以下 YAML 架構（不可包含任何非 YAML 的 markdown 說明文字）：
 
-=== 【第 2 組簡報生成 Prompt (第 14 - 26 頁)】 ===
-(在此輸出完整提示詞，包含全域設計規範、第 1 頁封面風格錨點、第 13 頁內容與視覺緩衝、以及 14-26 頁每頁的標題與視覺描述)</pre>
+global_design_specification:
+  atmosphere: ["形容詞1", "形容詞2", "形容詞3"] # 定義整體調性
+  color_scheme:
+    background: "Hex Code"
+    text: "Hex Code"
+    accent: "Hex Code" # 重點標示色
+    secondary: "Hex Code"
+  typography:
+    heading: "字體與樣式描述"
+    body: "字體與樣式描述"
+  layout_rules:
+    navigation: "頁碼或導航形式"
+    image_style: "圖片處理風格 (如：去背、黑白濾鏡)"
+    decorative_elements: "視覺點綴元素 (如：格線、幾何色塊)"
+
+slide_planning:
+  - page: 1
+    type: "頁面功能 (如：封面、對比頁)"
+    layout_style: "佈局風格 (如：左右分割、滿版聚焦)"
+    visual_description: "詳細描述畫面元素配置與構圖"
+    content:
+      title: "頁面大標題"
+      subtitle: "副標題"
+      generation_prompt: "給 AI 的具體生成指令 (包含語氣與字數)"
+
+  - page: 2
+    # 依此類推...
+
+【編寫規範 (Rules)】
+- 所有字串值必須包裹在雙引號 "" 內。
+- 層級縮排必須準確（2 個空格）。
+- 若來源資訊不足，請根據專業設計邏輯進行「合理推斷」並填入 YAML 中，而非留白。</pre>
           </div>
           
           <div class="ppt-actions">
@@ -601,7 +636,7 @@
               <div class="step-badge">1</div>
               <div class="step-body">
                 <h4>1. NBLM 規劃</h4>
-                <p>將左側的「分組規劃提示詞」貼入 NBLM 對話框。它會自動讀取您筆記本內的化工製程、腐蝕機制、檢修SOP等文件，自動計算總頁數，並回傳多組 <code>=== 【第 X 組簡報生成 Prompt】 ===</code> 的區塊。</p>
+                <p>將左側的「分組規劃提示詞」貼入 NBLM 對話框。它會自動分析您的來源文件（如 PDF 簡報或純文字），以 <strong>YAML 格式</strong> 回傳簡報設計規範與頁面規劃。若總頁數超過 13 頁，會以 <code>---</code> 分隔出多組 YAML 區塊。</p>
               </div>
             </div>
             
@@ -610,8 +645,8 @@
               <div class="step-body">
                 <h4>2. 分批生成並下載</h4>
                 <ul class="inner-step-list">
-                  <li>複製對話中的 <strong>「第 1 組 Prompt」</strong>，點選 NBLM 內建的 <strong>「建立簡報」</strong> 功能貼上生成，下載為 <code>Part1.pptx</code>。</li>
-                  <li>複製對話中的 <strong>「第 2 組 Prompt」</strong>，同樣在 NBLM 中生成並下載為 <code>Part2.pptx</code>，依此類推。</li>
+                  <li>複製 YAML 回應中的 <strong>「第一組 YAML 區塊」</strong>，點選 NBLM 內建的 <strong>「建立簡報」</strong> 功能貼上並生成，下載為 <code>Part1.pptx</code>。</li>
+                  <li>複製 <strong>「第二組 YAML 區塊」</strong>（會自動包含第一組的風格錨點與視覺緩衝），在 NBLM 中生成並下載為 <code>Part2.pptx</code>，依此類推。</li>
                 </ul>
               </div>
             </div>
@@ -928,7 +963,7 @@
                 <label>單頁口白字數限制 (Length)</label>
                 <select id="narrative-length-select">
                   <option value="150字以內 (極簡精煉，約30秒解說)">150字以內 (極簡精煉)</option>
-                  <option value="150-300字 (結構適中，約1-2分鐘解說)" selected>150-300字 (結構適中)</option>
+                  <option value="50-300字 (結構適中，約0.5-2分鐘解說)" selected>50-300字 (結構適中)</option>
                   <option value="300-500字 (詳細解說，包含背景推導)">300-500字 (詳細解說)</option>
                 </select>
               </div>

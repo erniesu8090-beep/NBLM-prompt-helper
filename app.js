@@ -983,7 +983,7 @@ function init() {
       custom: "",
       background: "擁有 20 年一線精餾塔操作運轉與 DCS 調試經驗",
       tone: "專業嚴謹、邏輯清晰、用語精確",
-      length: "150-300字 (結構適中，約1-2分鐘解說)",
+      length: "50-300字 (結構適中，約0.5-2分鐘解說)",
       structure: "逐頁解說 + 轉場引導 (包含上一頁到下一頁的口語轉接句)",
       directives: "特別針對製程流程圖頁面（PFD）加強管線介質與閥門開啟先後順序的口說引導，口白要有一線人員的務實口吻。"
     },
@@ -993,7 +993,7 @@ function init() {
       custom: "",
       background: "擅長將深奧科學原理解碼為日常趣味比喻的科普作家",
       tone: "生動風趣、通俗易懂、善用日常比喻",
-      length: "150-300字 (結構適中，約1-2分鐘解說)",
+      length: "50-300字 (結構適中，約0.5-2分鐘解說)",
       structure: "逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)",
       directives: "多用「想像一下...」或問句開頭，將蒸發、凝結比喻成煮開水與冰水杯壁的露水，適合國中學生聽講。"
     },
@@ -1170,7 +1170,7 @@ function updateNarrativePrompt() {
   const toneSelectEl = document.getElementById("narrative-tone-select");
   const tone = toneSelectEl ? toneSelectEl.value : "專業嚴謹、邏輯清晰、用語精確";
   const lengthSelectEl = document.getElementById("narrative-length-select");
-  const length = lengthSelectEl ? lengthSelectEl.value : "150-300字 (結構適中)";
+  const length = lengthSelectEl ? lengthSelectEl.value : "50-300字 (結構適中)";
   const structureSelectEl = document.getElementById("narrative-structure-select");
   const structure = structureSelectEl ? structureSelectEl.value : "逐頁解說 + 重點整理";
   const directivesInputEl = document.getElementById("narrative-directives-input");
@@ -1180,7 +1180,7 @@ function updateNarrativePrompt() {
   if (structure.includes("重點整理")) {
     structureGuide = `請在每頁的口白下方，以條列式列出 3 個「本頁核心重點整理 (Key Takeaways)」，方便簡報錄製者快速抓到核心要點。`;
   } else if (structure.includes("轉場引導")) {
-    structureGuide = `請在每頁的口白結尾處，自然融入一兩句「轉場引導句 (Transition Script)」，能順暢銜接下一頁簡報的主題內容，讓簡報錄影的語氣聽起來自然流暢、一氣成。`;
+    structureGuide = `請在每頁的口白結尾處，自然融入一兩句「轉場引導句 (Transition Script)」，能順暢銜接下一頁簡報的主題內容，讓簡報錄影的語氣聽起來自然流暢、一氣呵成。`;
   } else {
     structureGuide = `請僅輸出純口白逐字稿。無須輸出多餘的標題標記、重點整理或轉場說明，以利錄音設備直接朗讀或轉換為旁白音軌。`;
   }
@@ -1200,10 +1200,10 @@ function updateNarrativePrompt() {
 - 口白輸出結構：${structure}
 
 【三、結構引導要求】
-請針對來源簡報中的每一頁（從第 1 頁封面開始，依序至最後一頁），提供對應的口白腳本。每頁的格式請依據以下要求輸出：
-1. 【頁面標記】：請清晰標示「[Slide X: 該頁標題/主題]」。
-2. 【講解口白】：提供符合人設、調性與字數限制的解說逐字稿。
-3. 【結構要求】：
+請針對來源簡報中的每一頁（從第 1 頁封面開始，依序至最後一頁），提供對應的口白腳本。每頁的口白與格式必須嚴格遵守以下要求：
+1. 口白格式為：【第 X 頁：該頁標題/大綱】該頁口白解說內文
+   （例如：【第 1 頁：化工製程介紹】大家好，今天我們要討論的是精餾系統的操作優化...）
+2. 【結構與附加要求】：
    ${structureGuide}
 
 【四、客製微調指令】
