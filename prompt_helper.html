@@ -75,6 +75,10 @@
         <span class="tab-icon">🗣️</span>
         <span class="tab-text">簡報講解口白</span>
       </button>
+      <button class="tab-btn" data-tab="html-presentation">
+        <span class="tab-icon">🌐</span>
+        <span class="tab-text">HTML簡報格式化</span>
+      </button>
     </nav>
 
     <!-- WORKSPACE TABS CONTENT -->
@@ -1052,6 +1056,190 @@ slide_planning:
             <div class="monitor-actions">
               <button id="copy-narrative-btn" class="action-btn copy-btn copy-btn-gold">
                 <span class="btn-text">📋 複製簡報口白指令</span>
+              </button>
+              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+                <span>🚀 開啟 NotebookLM</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+        
+      </div>
+    </div>
+
+    <!-- TAB 5: HTML PRESENTATION FORMATTER WORKSPACE -->
+    <div id="html-presentation-workspace" class="workspace-tab-content">
+      <div class="main-grid">
+        
+        <!-- LEFT PANEL: PARAMETERS -->
+        <section class="panel-left">
+          
+          <!-- 01 Topic -->
+          <div class="card card-topic">
+            <div class="card-num" style="background: linear-gradient(135deg, #00d2d1, #48dbfb); box-shadow: 0 0 10px rgba(0, 210, 211, 0.4);">01</div>
+            <div class="card-header-text">
+              <h3>HTML 簡報主題與核心範疇</h3>
+              <p>輸入您要製作 HTML 簡報的主題並選取快速標籤</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label for="html-topic-input">簡報主題名稱 (Topic)</label>
+                <input type="text" id="html-topic-input" placeholder="例如：化工廠設備防蝕與安全操作技術" value="化工廠設備防蝕與安全操作技術">
+              </div>
+            </div>
+            
+            <div class="tag-pills-container">
+              <span class="tag-pill html-tag-pill active" data-tag="工業安全">工業安全</span>
+              <span class="tag-pill html-tag-pill" data-tag="製程技術">製程技術</span>
+              <span class="tag-pill html-tag-pill" data-tag="設備維護">設備維護</span>
+              <span class="tag-pill html-tag-pill" data-tag="商業提案">商業提案</span>
+            </div>
+          </div>
+
+          <!-- 02 Layout & Aesthetics -->
+          <div class="card card-style">
+            <div class="card-num" style="background: linear-gradient(135deg, #00d2d1, #48dbfb); box-shadow: 0 0 10px rgba(0, 210, 211, 0.4);">02</div>
+            <div class="card-header-text">
+              <h3>簡報視覺風格與動畫框架</h3>
+              <p>定義 HTML 網頁簡報的整體設計語彙與動態框架</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label for="html-style-select">畫面視覺風格 (Style)</label>
+                <select id="html-style-select">
+                  <option value="工業儀表板風格 (SaaS Dashboard Style)，深色背景，局部霓虹發光" selected>工業儀表板風格 (SaaS Dashboard Style) - 深色、霓虹發光</option>
+                  <option value="科技未來宇宙風格 (Sci-Fi Cyberpunk Style)，深色背景，發光網格與高對比色">科技未來宇宙風格 (Sci-Fi Cyberpunk Style) - 深藍/霓虹、高對比</option>
+                  <option value="極簡乾淨商務風格 (Light Business Style)，白底黑字，單色漸層">極簡乾淨商務風格 (Light Business Style) - 白底黑字、精緻簡約</option>
+                  <option value="學院白板手繪風格 (Education Chalk Style)，仿黑板/手繪圖表，高對比粉筆字">學院白板手繪風格 (Education Chalk Style) - 黑板粉筆字、手繪感</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label for="html-animation-select">動態設計與特效框架 (Animation)</label>
+                <select id="html-animation-select">
+                  <option value="GSAP 3 (GreenSock Animation Platform) 物理/彈性特效" selected>GSAP 3 - 物理/彈性特效</option>
+                  <option value="CSS Keyframes / Transitions 原生網頁過渡特效">CSS Keyframes / Transitions - 原生過渡</option>
+                  <option value="Lottie / Canvas 高互動向量複雜圖形動畫">Lottie / Canvas - 高互動複雜動畫</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 Timing & Language -->
+          <div class="card card-timing">
+            <div class="card-num" style="background: linear-gradient(135deg, #00d2d1, #48dbfb); box-shadow: 0 0 10px rgba(0, 210, 211, 0.4);">03</div>
+            <div class="card-header-text">
+              <h3>時長與口白配音設定</h3>
+              <p>設定每頁簡報預設的轉場時間與口白調性</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label for="html-voiceover-language">語意與口白語言 (Voiceover)</label>
+                <select id="html-voiceover-language">
+                  <option value="繁體中文(台灣) - 口語自然、句型流暢且避免贅字，字句需與字幕百分百對應" selected>繁體中文 (台灣) - 口語流暢、對應字幕</option>
+                  <option value="簡體中文 - 專業科普解說口吻">簡體中文 - 專業科普解說</option>
+                  <option value="English - Natural business presentation style">English - Natural Business Style</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label for="html-transition-time">預設轉場保留時長 (Transition)</label>
+                <select id="html-transition-time">
+                  <option value="1 秒 (標準過渡)" selected>1 秒 (標準過渡)</option>
+                  <option value="0.5 秒 (快速過渡)">0.5 秒 (快速過渡)</option>
+                  <option value="2 秒 (慢速過渡)">2 秒 (慢速過渡)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label for="html-scene-count-select">預期 Scene 總頁數限制 (Scene Count)</label>
+                <select id="html-scene-count-select">
+                  <option value="AI 自動評估 (依來源文件長度與內容邏輯，自動規劃與評估最適當的 Scene 總數量)" selected>AI 自動評估 (自動規劃最適頁數)</option>
+                  <option value="精簡模式 (請將來源內容精煉為約 5 - 8 頁的 Scene 簡報架構，聚焦核心論點)">精簡模式 (約 5 - 8 頁 Scene)</option>
+                  <option value="標準模式 (請規劃約 10 - 12 頁的 Scene 簡報架構，以求結構完整)">標準模式 (約 10 - 12 頁 Scene)</option>
+                  <option value="【分批生成指示】：請先規劃整份簡報的大綱目錄，但本次回答僅需「詳細生成第 1 到第 5 頁的 Scene 規格」，後續頁面等我下達接續指令後再產出。">分批生成：第 1 - 5 頁 (防止單次字數截斷，首批生成)</option>
+                  <option value="【分批生成指示】：本次回答請「接續前段，詳細生成第 6 到第 10 頁的 Scene 規格」，並在第 6 頁的開頭自動銜接第 5 頁的視覺風格與邏輯。">分批生成：第 6 - 10 頁 (接續前段視覺與內容)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04 Directives -->
+          <div class="card card-directives">
+            <div class="card-num" style="background: linear-gradient(135deg, #00d2d1, #48dbfb); box-shadow: 0 0 10px rgba(0, 210, 211, 0.4);">04</div>
+            <div class="card-header-text">
+              <h3>客製微調指令與輸出約束</h3>
+              <p>輸入您自訂的排版焦點或特殊的生成限制</p>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-col">
+                <label for="html-directives-input">客製微調指令 (Directives)</label>
+                <textarea id="html-directives-input" rows="3" placeholder="例如：每一頁口白開頭需加上『第 X 頁...』；或針對公式推導頁加強步驟解說。">產生的內容，移除所有來源的項目編號，確保內容簡潔。生成的簡報內容不要有字體的名字。口白部分語氣要像是一對口頭報告般自然、生動且具口語感。</textarea>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- RIGHT PANEL: PRESETS & MONITOR -->
+        <section class="panel-right">
+          
+          <!-- Presets -->
+          <div class="card card-presets">
+            <div class="presets-header">
+              <span class="preset-icon" style="color: #00d2d1; filter: drop-shadow(0 0 5px rgba(0, 210, 211, 0.3));">🌐</span>
+              <h3>HTML 格式化預設模板 · HTML PRESETS</h3>
+            </div>
+            
+            <div class="preset-section">
+              <span class="preset-section-title">HTML PRESENTATION PRESETS</span>
+              <div class="presets-grid presets-grid-single">
+                <button class="preset-btn" id="html-preset-dashboard" style="border-left: 3px solid #00d2d1;">
+                  <span class="btn-icon" style="color: #00d2d1;">📊</span>
+                  <div class="btn-info">
+                    <span class="btn-title">工業儀表板風格 (GSAP 物理彈性)</span>
+                    <span class="btn-subtitle">SaaS Dashboard Style + GSAP ➔ 適合工業或技術監控簡報</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="html-preset-cyberpunk" style="border-left: 3px solid #00d2d1;">
+                  <span class="btn-icon" style="color: #00d2d1;">⚡</span>
+                  <div class="btn-info">
+                    <span class="btn-title">科技未來宇宙風格 (Cyberpunk 霓虹)</span>
+                    <span class="btn-subtitle">Sci-Fi Style + Canvas/CSS ➔ 適合前沿技術或產品發布</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="html-preset-minimal" style="border-left: 3px solid #00d2d1;">
+                  <span class="btn-icon" style="color: #00d2d1;">💡</span>
+                  <div class="btn-info">
+                    <span class="btn-title">極簡乾淨商務風格 (簡練淡入)</span>
+                    <span class="btn-subtitle">Light Business Style + CSS ➔ 適合高階主管報告或商業提案</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monitor -->
+          <div class="card card-monitor">
+            <div class="monitor-header">
+              <div class="monitor-status">
+                <span class="pulse-dot" style="background-color: #00d2d1; box-shadow: 0 0 8px #00d2d1;"></span>
+                <h3>HTML 簡報格式化指令輸出 · MONITOR</h3>
+              </div>
+            </div>
+            
+            <div class="monitor-area">
+              <pre id="html-prompt-output" class="prompt-text">填好設定，即可在此監控生成的 HTML 簡報格式化指令...</pre>
+            </div>
+            
+            <div class="monitor-actions">
+              <button id="copy-html-btn" class="action-btn copy-btn copy-btn-cyan" style="background: linear-gradient(135deg, #00d2d1, #00b894); box-shadow: 0 4px 15px rgba(0, 210, 211, 0.3);">
+                <span class="btn-text">📋 複製 HTML 簡報提示詞</span>
               </button>
               <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>

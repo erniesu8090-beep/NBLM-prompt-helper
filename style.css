@@ -114,6 +114,10 @@ body {
   border-color: rgba(240, 147, 43, 0.25);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 15px rgba(240, 147, 43, 0.15);
 }
+.header.theme-html {
+  border-color: rgba(0, 210, 211, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2), 0 0 15px rgba(0, 210, 211, 0.15);
+}
 
 .logo-area {
   display: flex;

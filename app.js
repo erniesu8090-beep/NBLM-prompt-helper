@@ -761,13 +761,16 @@ function init() {
         } else if (targetTab === "slide-narrative") {
           headerTitle.textContent = "為簡報投影片調配口白與腳本";
           headerDesc.textContent = "設定角色人設與口說調性，一鍵生成高品質投影片講解口白提示詞";
+        } else if (targetTab === "html-presentation") {
+          headerTitle.textContent = "規劃 HTML 互動簡報的嚴謹架構";
+          headerDesc.textContent = "自訂視覺版面、動態設計與口白字幕，一鍵生成高品質 HTML 簡報格式化提示詞";
         }
       }
 
       // Update header theme class based on active tab
       const headerElement = document.querySelector(".header");
       if (headerElement) {
-        headerElement.classList.remove("theme-audio", "theme-ppt", "theme-video", "theme-narrative");
+        headerElement.classList.remove("theme-audio", "theme-ppt", "theme-video", "theme-narrative", "theme-html");
         if (targetTab === "audio-overview") {
           headerElement.classList.add("theme-audio");
         } else if (targetTab === "presentation-helper") {
@@ -776,6 +779,8 @@ function init() {
           headerElement.classList.add("theme-video");
         } else if (targetTab === "slide-narrative") {
           headerElement.classList.add("theme-narrative");
+        } else if (targetTab === "html-presentation") {
+          headerElement.classList.add("theme-html");
         }
       }
     });
@@ -1072,6 +1077,101 @@ function init() {
 
   // Load default preset (chemical_process) on load
   loadPreset("chemical_process");
+
+  // HTML PRESENTATION WORKSPACE INITIALIZATION
+  const htmlTopicInput = document.getElementById("html-topic-input");
+  const htmlStyleSelect = document.getElementById("html-style-select");
+  const htmlAnimationSelect = document.getElementById("html-animation-select");
+  const htmlLanguageSelect = document.getElementById("html-voiceover-language");
+  const htmlTransitionTimeSelect = document.getElementById("html-transition-time");
+  const htmlSceneCountSelect = document.getElementById("html-scene-count-select");
+  const htmlDirectivesInput = document.getElementById("html-directives-input");
+
+  const htmlInputs = [
+    htmlTopicInput, htmlStyleSelect, htmlAnimationSelect,
+    htmlLanguageSelect, htmlTransitionTimeSelect, htmlSceneCountSelect, htmlDirectivesInput
+  ];
+
+  htmlInputs.forEach(input => {
+    if (input) {
+      input.addEventListener("input", updateHtmlPresentationPrompt);
+      input.addEventListener("change", updateHtmlPresentationPrompt);
+    }
+  });
+
+  const htmlTagPills = document.querySelectorAll(".html-tag-pill");
+  htmlTagPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      htmlTagPills.forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      
+      const tagValue = pill.getAttribute("data-tag");
+      if (htmlTopicInput) {
+        htmlTopicInput.value = `關於「${tagValue}」的 HTML 互動網頁簡報說明`;
+        updateHtmlPresentationPrompt();
+      }
+    });
+  });
+
+  function loadHtmlPreset(key) {
+    const preset = HTML_PRESETS[key];
+    if (!preset) return;
+
+    if (htmlTopicInput) htmlTopicInput.value = preset.topic;
+    if (htmlStyleSelect) htmlStyleSelect.value = preset.style;
+    if (htmlAnimationSelect) htmlAnimationSelect.value = preset.animation;
+    if (htmlLanguageSelect) htmlLanguageSelect.value = preset.language;
+    if (htmlTransitionTimeSelect) htmlTransitionTimeSelect.value = preset.transitionTime;
+    if (htmlSceneCountSelect) htmlSceneCountSelect.value = preset.sceneCount || "AI 自動評估 (依來源文件長度與內容邏輯，自動規劃與評估最適當的 Scene 總數量)";
+    if (htmlDirectivesInput) htmlDirectivesInput.value = preset.directives;
+
+    // Toggle active style of preset buttons
+    ["dashboard", "cyberpunk", "minimal"].forEach(k => {
+      const btn = document.getElementById(`html-preset-${k}`);
+      if (btn) {
+        if (k === key) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      }
+    });
+
+    updateHtmlPresentationPrompt();
+  }
+
+  ["dashboard", "cyberpunk", "minimal"].forEach(key => {
+    const btn = document.getElementById(`html-preset-${key}`);
+    if (btn) {
+      btn.addEventListener("click", () => loadHtmlPreset(key));
+    }
+  });
+
+  const copyHtmlBtn = document.getElementById("copy-html-btn");
+  const htmlPromptOutput = document.getElementById("html-prompt-output");
+  if (copyHtmlBtn && htmlPromptOutput) {
+    copyHtmlBtn.addEventListener("click", () => {
+      const textToCopy = htmlPromptOutput.textContent;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          copyHtmlBtn.classList.add("success");
+          const origText = copyHtmlBtn.querySelector(".btn-text").textContent;
+          copyHtmlBtn.querySelector(".btn-text").textContent = "✓ 已複製 HTML 簡報提示詞！";
+          
+          setTimeout(() => {
+            copyHtmlBtn.classList.remove("success");
+            copyHtmlBtn.querySelector(".btn-text").textContent = origText;
+          }, 2000);
+        })
+        .catch(err => {
+          console.error("複製失敗：", err);
+          alert("複製失敗，請手動選取文字複製。");
+        });
+    });
+  }
+
+  // Initial load for html workspace
+  loadHtmlPreset("dashboard");
 }
 
 // Initialize on DOM load
@@ -1212,10 +1312,117 @@ function updateNarrativePrompt() {
 
 【五、輸出約束】
 - 所有講解口白均應使用繁體中文（台灣）呈現，語氣要像是一對口頭報告般自然、生動且具口語感。
-- 嚴格僅依據上傳的簡報內容大綱進行解說與提煉，不可憑空捏造簡報中未提及的實證數據或事實。`;
+- 嚴格僅依據上傳的簡報內容大綱進行解說與提煉，不可憑空捏造簡報中未提及的實證數據或事實。
+- 【重要：語音合成防崩潰限制】：
+  1. 嚴禁在口白與配音內文中使用「雞排」及任何讀音為 jī pái 的諧音字（如：炸雞排、吉排、積排、基牌等），請以「下午茶」、「點心」、「雞肉排」或「炸雞」等字眼替代。
+  2. 嚴禁在口白與配音內文中使用任何中英文引號（如「」、『』、“”）、書名號（如《》）或括號（如()、[]、{}），請以純文字或空格取代，以防止微調 TTS 解析時無聲或生成失敗。`;
 
   const outputEl = document.getElementById("narrative-prompt-output");
   if (outputEl) {
     outputEl.textContent = finalPrompt;
   }
 }
+
+// Global update function for HTML Presentation Prompt
+function updateHtmlPresentationPrompt() {
+  const topicInputEl = document.getElementById("html-topic-input");
+  const topic = (topicInputEl ? topicInputEl.value.trim() : "") || "未設定簡報主題";
+  const styleSelectEl = document.getElementById("html-style-select");
+  const style = styleSelectEl ? styleSelectEl.value : "工業儀表板風格 (SaaS Dashboard Style)，深色背景，局部霓虹發光";
+  const animationSelectEl = document.getElementById("html-animation-select");
+  const animation = animationSelectEl ? animationSelectEl.value : "GSAP 3 (GreenSock Animation Platform) 物理/彈性特效";
+  const langSelectEl = document.getElementById("html-voiceover-language");
+  const language = langSelectEl ? langSelectEl.value : "繁體中文(台灣) - 口語自然";
+  const transitionTimeSelectEl = document.getElementById("html-transition-time");
+  const transitionTime = transitionTimeSelectEl ? transitionTimeSelectEl.value : "1 秒";
+  const sceneCountSelectEl = document.getElementById("html-scene-count-select");
+  const sceneCount = sceneCountSelectEl ? sceneCountSelectEl.value : "AI 自動評估 (依來源文件長度與內容邏輯，自動規劃與評估最適當的 Scene 總數量)";
+  const directivesInputEl = document.getElementById("html-directives-input");
+  const directives = (directivesInputEl ? directivesInputEl.value.trim() : "") || "無特殊微調指令";
+
+  const finalPrompt = `你是一位頂尖的簡報架構師 (Presentation Architect) 與前端開發工程師。請深入分析目前筆記本中的所有來源文件，並為我規劃一份結構完整的 HTML 簡報架構與口白腳本。
+
+請將每一頁簡報（Scene）格式化為以下**嚴格的結構規範**（不可包含任何非此格式的說明文字，也不要包含任何字體的名字）：
+
+【Scene X：頁面主題/大綱】
+預期時長：Y 秒（配音檔約 Y - 1.5 秒，保留 1.5 秒轉場）
+設計風格：[符合下方設定的單頁視覺設計語彙，包含背景與色彩配置]
+
+1. 畫面視覺佈局 (Visual Layout)
+版面：[如雙欄佈局（左 55%，右 45%）、單欄滿版、三分欄等]
+- [詳細描述畫面元素配置與構圖，包含左右欄分別放置什麼組件、按鈕或卡片樣式]
+
+2. 畫面上文字 (On-Screen Copy)
+- [列出畫面上顯示的文字，包含小標籤、主標題、卡片內容與清單等，移除所有來源的項目編號]
+
+3. 口白配音與字幕切分 (Voiceover & Subtitles)
+第一句 (時段，例如 0s - 9.0s)：
+對白：「...」
+字幕 X.1：...
+第二句 (時段，例如 9.0s - 21.5s)：
+對白：「...」
+字幕 X.2：...
+
+4. 動態設計 (Motion & GSAP Instructions)
+進入動畫 (時段)：
+- [詳細說明每個組件進入畫面時的動畫行為，如淡入、自 X/Y 軸滑入，並包含 stagger/插值]
+核心互動動畫 (時段)：
+- [詳細說明畫面核心組件的互動與持續動畫，例如指針偏移、數據柱狀圖增長、發光呼吸等]
+退場動畫 (時段)：
+- [整頁淡出或移出，準備切換至下一頁]
+
+━━━━━━━━ 🌐 NOTEBOOKLM HTML PRESENTATION PROMPT ━━━━━━━
+
+【一、簡報核心主題與設定】
+- 簡報主題：${topic}
+- 設計風格：${style}
+- 動態設計框架：${animation}
+- 口語語言與調性：${language}
+- 預設轉場保留時長：${transitionTime}
+
+【二、格式與內容要求】
+- 必須將來源內容拆解為逐頁的 Scene 區塊，每頁嚴格遵守上述格式。
+- 所有畫面上文字必須移除項目編號，確保排版簡潔。
+- 口白部分語氣要像是一對口頭報告般自然、生動且具口語感。
+- 請勿在設計風格或字型說明中提及 any 特定的「字體名稱」（例如微軟正黑體、Arial 等）。
+- 【重要：語音合成防崩潰限制】：
+  1. 嚴禁在口白與配音內文中使用「雞排」及任何讀音為 jī pái 的諧音字（如：炸雞排、吉排、積排、基牌等），請以「下午茶」、「點心」、「雞肉排」或「炸雞」等字眼替代。
+  2. 嚴禁在口白與配音內文中使用任何中英文引號（如「」、『』、“”）、書名號（如《》）或括號（如()、[]、{}），請以純文字或空格取代，以防止微調 TTS 解析時無聲或生成失敗。
+
+【三、客製微調指令 / 敘事焦點】
+- 敘事與微調指示：
+  ${directives}`;
+
+  const outputEl = document.getElementById("html-prompt-output");
+  if (outputEl) {
+    outputEl.textContent = finalPrompt;
+  }
+}
+
+// HTML Presets database
+const HTML_PRESETS = {
+  dashboard: {
+    topic: "化工廠設備防蝕與安全操作技術簡報",
+    style: "工業儀表板風格 (SaaS Dashboard Style)，深色背景，局部霓虹發光",
+    animation: "GSAP 3 (GreenSock Animation Platform) 物理/彈性特效",
+    language: "繁體中文(台灣) - 口語自然、句型流暢且避免贅字，字句需與字幕百分百對應",
+    transitionTime: "1 秒 (標準過渡)",
+    directives: "產生的內容，移除所有來源的項目編號，確保內容簡潔。生成的簡報內容不要有字體的名字。口白部分語氣要像是一對口頭報告般自然、生動且具口語感。每一頁必須特別說明左欄與右欄的組件配置，右欄以數據儀表板為核心。"
+  },
+  cyberpunk: {
+    topic: "AI 智能邊緣運算與自控系統未來技術展望",
+    style: "科技未來宇宙風格 (Sci-Fi Cyberpunk Style)，深色背景，發光網格與高對比色",
+    animation: "Lottie / Canvas 高互動向量複雜圖形動畫",
+    language: "繁體中文(台灣) - 口語自然、句型流暢且避免贅字，字句需與字幕百分百對應",
+    transitionTime: "0.5 秒 (快速過渡)",
+    directives: "產生的內容，移除所有來源的項目編號，確保內容簡潔。生成的簡報內容不要有字體的名字。動態設計部分加強 Canvas 粒子背景與發光線條的特效指示，視覺上要求賽博龐克感。"
+  },
+  minimal: {
+    topic: "公司新季度雲端服務效能優化與商業分析報告",
+    style: "極簡乾淨商務風格 (Light Business Style)，白底黑字，單色漸層",
+    animation: "CSS Keyframes / Transitions 原生網頁過渡特效",
+    language: "English - Natural business presentation style",
+    transitionTime: "2 秒 (慢速過渡)",
+    directives: "產生的內容，移除所有來源的項目編號，確保內容簡潔。生成的簡報內容不要有字體的名字。視覺與排版以極簡現代為主，左右對比與文字段落對齊要非常嚴整。"
+  }
+};
