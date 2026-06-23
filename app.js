@@ -859,7 +859,7 @@ slide_planning:
     content:
       title: "頁面大標題"
       subtitle: "副標題"
-      generation_prompt: "給 AI 的具體生成指令 (包含語氣與字數)"
+      generation_prompt: "給 AI 的投影片版面文字生成指令 (包含重點字數限制，例如：列點呈現 3 個核心項目，50字以內。請注意：此處為投影片版面文字，非簡報口白/講稿。)"
 
   - page: 2
     # 依此類推，最高規劃至第 13 頁...
@@ -894,7 +894,7 @@ slide_planning:
     content:
       title: "第一組的封面大標題"
       subtitle: "第一組的副標題"
-      generation_prompt: "第一組封面的生成風格描述，用於錨定視覺"
+      generation_prompt: "第一組封面的生成風格描述，用於錨定投影片視覺"
 
   - page: [上一組的最後一頁頁碼]
     type: "上一組最後一頁的功能"
@@ -903,7 +903,7 @@ slide_planning:
     content:
       title: "上一組最後一頁的大標題"
       subtitle: "上一組最後一頁的副標題"
-      generation_prompt: "上一組最後一頁的生成風格描述，用於平滑過渡"
+      generation_prompt: "上一組最後一頁的生成風格描述，用於平滑投影片過渡"
 
   - page: [接續的起始頁碼]
     type: "頁面功能"
@@ -912,7 +912,7 @@ slide_planning:
     content:
       title: "本頁大標題"
       subtitle: "副標題"
-      generation_prompt: "給 AI 的具體生成指令"
+      generation_prompt: "給 AI 的投影片內文生成指令 (如：簡短列點說明，50字內)"
 
   # 依此類推，接續規劃後續頁面...
 
