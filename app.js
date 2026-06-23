@@ -813,6 +813,126 @@ function init() {
     });
   }
 
+  // PPT Step 1 & Step 2 Prompt switcher logic
+  const pptBtnStep1 = document.getElementById("ppt-mode-btn-step1");
+  const pptBtnStep2 = document.getElementById("ppt-mode-btn-step2");
+
+  const PPT_PROMPTS = {
+    step1: `你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃「第一組」的簡報架構（第 1 頁至第 13 頁）。你具備以下能力與遵循準則：
+
+【角色定位 (Role Definition)】
+- 逆向工程 (Reverse Engineering): 能深入分析來源文件（如 PDF 簡報、視覺圖片），拆解其設計 DNA，包含氛圍、配色邏輯與版面結構。
+- 結構生成 (Structure Generation): 能根據純文字來源，規劃出具備敘事邏輯與視覺張力的簡報架構。
+
+【核心任務與行為準則 (Core Tasks & Behavior)】
+無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（不可包含任何非 YAML 的說明文字）。請嚴格遵守以下邏輯：
+- 僅輸出「第一組」的簡報規劃，頁數限制為第 1 頁至第 13 頁。
+- 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points）。
+- 當要求「分析」來源時：觀察來源的視覺特徵，提取出 global_design_specification（全域設計規範），並歸納其內容邏輯，轉化為 slide_planning（頁面規劃）。
+- 當要求「生成」簡報架構時：根據來源內容的主題，自動定義最適合的 global_design_specification（如：科技主題配深色模式、教育主題配明亮手繪），並將內容拆解為 slide_planning，確保每一頁都有明確的視覺描述 (visual_description) 與生成提示 (generation_prompt)。
+- 移除所有來源的項目編號，確保內容簡潔。
+- 生成的簡報內容不要有字體的名字。
+
+【YAML 輸出標準格式 (Output Schema)】
+所有輸出內容必須嚴格遵守以下 YAML 架構（不可包含任何非 YAML 的 markdown 說明文字）：
+
+global_design_specification:
+  atmosphere: ["形容詞1", "形容詞2", "形容詞3"] # 定義整體調性
+  color_scheme:
+    background: "Hex Code"
+    text: "Hex Code"
+    accent: "Hex Code" # 重點標示色
+    secondary: "Hex Code"
+  typography:
+    heading: "字體與樣式描述"
+    body: "字體與樣式描述"
+  layout_rules:
+    navigation: "頁碼或導航形式"
+    image_style: "圖片處理風格 (如：去背、黑白濾鏡)"
+    decorative_elements: "視覺點綴元素 (如：格線、幾何色塊)"
+
+slide_planning:
+  - page: 1
+    type: "頁面功能 (如：封面、對比頁)"
+    layout_style: "佈局風格 (如：左右分割、滿版聚焦)"
+    visual_description: "詳細描述畫面元素配置與構圖"
+    content:
+      title: "頁面大標題"
+      subtitle: "副標題"
+      generation_prompt: "給 AI 的具體生成指令 (包含語氣與字數)"
+
+  - page: 2
+    # 依此類推，最高規劃至第 13 頁...
+
+【編寫規範 (Rules)】
+- 所有字串值必須包裹在雙引號 "" 內。
+- 層級縮排必須準確（2 個空格）。
+- 若來源資訊不足，請根據專業設計邏輯進行「合理推斷」並填入 YAML 中，而非留白。`,
+    step2: `你是一位頂尖的簡報架構師 (Presentation Architect)。請根據我們在上一個對話中生成的簡報架構，接續為我規劃**下一組簡報（最多新增 11 頁）**。
+
+為了確保生成時能 100% 自然銜接前一組的視覺與敘事，你必須嚴格遵循以下邏輯與輸出標準：
+
+【核心任務與銜接機制 (Core Tasks & Behavior)】
+1. 無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（不可包含任何非 YAML 的說明文字）。
+2. 在此組 YAML 的 slide_planning 開頭，你必須**自動融入「第一組的封面（page: 1，風格錨點）」與「上一組最後一頁（做為視覺與邏輯緩衝區）」**，強迫 NBLM 讀取並錨定先前的視覺特徵。
+3. 接續上一組最後一頁的頁碼，往後規劃後續的簡報頁面（例如：上一組結束於第 13 頁，此組即從第 14 頁開始規劃至第 26 頁；若上一組結束於第 26 頁，此組即從第 27 頁規劃至第 39 頁，依此類推）。
+4. 沿用已定義的設計規範 (global_design_specification)，將其完整填入此組 YAML 的開頭，確保背景色、文字色、強調色與字體完全一致。
+5. 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points）。
+6. **【多組檢測提示】**：若你評估來源文件的內容在規劃完本組（最多新增 11 頁新內容）後**仍有剩餘**，請在 YAML 輸出最末端以註解形式標記：'# ⚠️ 提示：來源文件尚未完全解析完畢，請繼續貼入此提示詞以接續規劃下一組。'。若已講完，則標記：'# 🎉 提示：所有內容已全數規劃完畢！'。
+
+【YAML 輸出標準格式 (Output Schema)】
+所有輸出內容必須嚴格遵守以下 YAML 架構（不可包含任何非 YAML 的 markdown 說明文字）：
+
+global_design_specification:
+  # 完整複製第一組的 global_design_specification
+
+slide_planning:
+  - page: 1
+    type: "第一組的封面"
+    layout_style: "第一組的封面佈局"
+    visual_description: "完整複製第一組封面的視覺描述，作為風格錨點"
+    content:
+      title: "第一組的封面大標題"
+      subtitle: "第一組的副標題"
+      generation_prompt: "第一組封面的生成風格描述，用於錨定視覺"
+
+  - page: [上一組的最後一頁頁碼]
+    type: "上一組最後一頁的功能"
+    layout_style: "上一組最後一頁的佈局"
+    visual_description: "完整複製上一組最後一頁的視覺描述，作為緩衝過渡"
+    content:
+      title: "上一組最後一頁的大標題"
+      subtitle: "上一組最後一頁的副標題"
+      generation_prompt: "上一組最後一頁的生成風格描述，用於平滑過渡"
+
+  - page: [接續的起始頁碼]
+    type: "頁面功能"
+    layout_style: "佈局風格"
+    visual_description: "詳細描述畫面配置"
+    content:
+      title: "本頁大標題"
+      subtitle: "副標題"
+      generation_prompt: "給 AI 的具體生成指令"
+
+  # 依此類推，接續規劃後續頁面...
+
+# (在此處輸出檢測註解)`
+  };
+
+  if (pptBtnStep1 && pptBtnStep2 && pptTemplateText) {
+    pptBtnStep1.addEventListener("click", () => {
+      pptBtnStep1.classList.add("active");
+      pptBtnStep2.classList.remove("active");
+      pptTemplateText.textContent = PPT_PROMPTS.step1;
+    });
+
+    pptBtnStep2.addEventListener("click", () => {
+      pptBtnStep2.classList.add("active");
+      pptBtnStep1.classList.remove("active");
+      pptTemplateText.textContent = PPT_PROMPTS.step2;
+    });
+  }
+
   // Accident dropdown triggers
   const accFrameworkSelect = document.getElementById("accident-framework");
   const accTargetSelect = document.getElementById("accident-target");

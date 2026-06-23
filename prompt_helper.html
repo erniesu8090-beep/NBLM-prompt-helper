@@ -53,7 +53,7 @@
       </div>
       <div class="status-badge">
         <span class="status-dot"></span>
-        <span>CONSOLE ACTIVE v2.2.0 (2026/06/15)</span>
+        <span>CONSOLE ACTIVE v2.3.0 (2026/06/23)</span>
       </div>
     </header>
 
@@ -539,7 +539,7 @@
               <button id="copy-btn" class="action-btn copy-btn">
                 <span class="btn-text">📋 複製提示詞</span>
               </button>
-              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+              <a href="https://notebooklm.google.com/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>
               </a>
             </div>
@@ -562,21 +562,28 @@
             <p>複製下方提示詞貼入 NotebookLM 對話框，進行長簡報分組規劃</p>
           </div>
           
+          <div class="ppt-mode-tabs">
+            <button id="ppt-mode-btn-step1" class="ppt-mode-btn active" data-step="1">
+              <span>第一階段：生成 Part 1 (1-13頁)</span>
+            </button>
+            <button id="ppt-mode-btn-step2" class="ppt-mode-btn" data-step="2">
+              <span>第二階段：生成 Part 2 (接續頁)</span>
+            </button>
+          </div>
+          
           <div class="prompt-preview-box">
-            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃一份結構完整的簡報架構。你具備以下能力與遵循準則：
+            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃「第一組」的簡報架構（第 1 頁至第 13 頁）。你具備以下能力與遵循準則：
 
 【角色定位 (Role Definition)】
 - 逆向工程 (Reverse Engineering): 能深入分析來源文件（如 PDF 簡報、視覺圖片），拆解其設計 DNA，包含氛圍、配色邏輯與版面結構。
 - 結構生成 (Structure Generation): 能根據純文字來源，規劃出具備敘事邏輯與視覺張力的簡報架構。
 
 【核心任務與行為準則 (Core Tasks & Behavior)】
-無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（允許多個 YAML 文件以 "---" 分隔）。請嚴格遵守以下邏輯：
+無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（不可包含任何非 YAML 的說明文字）。請嚴格遵守以下邏輯：
+- 僅輸出「第一組」的簡報規劃，頁數限制為第 1 頁至第 13 頁。
+- 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points）。
 - 當要求「分析」來源時：觀察來源的視覺特徵，提取出 global_design_specification（全域設計規範），並歸納其內容邏輯，轉化為 slide_planning（頁面規劃）。
 - 當要求「生成」簡報架構時：根據來源內容的主題，自動定義最適合的 global_design_specification（如：科技主題配深色模式、教育主題配明亮手繪），並將內容拆解為 slide_planning，確保每一頁都有明確的視覺描述 (visual_description) 與生成提示 (generation_prompt)。
-- 頁數評估與分組：
-  - 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points），自動評估最適總頁數 N。
-  - 若總頁數大於 13 頁，請按每組最多 13 頁切分（如：第 1 組、第 2 組...），並輸出多個獨立的 YAML 文件，文件之間以 "---" 符號分隔。
-  - 【關鍵銜接機制】：在第 2 組的 YAML 開頭，你必須在 slide_planning 中自動融入「第 1 組封面（page: 1，風格錨點）」與「第 13 頁的詳細內容與視覺描述（page: 13，邏輯與視覺緩衝區）」，命令 NBLM 在生成第 2 組時必須自然銜接前一組的視覺與敘事。
 - 移除所有來源的項目編號，確保內容簡潔。
 - 生成的簡報內容不要有字體的名字。
 
@@ -609,7 +616,7 @@ slide_planning:
       generation_prompt: "給 AI 的具體生成指令 (包含語氣與字數)"
 
   - page: 2
-    # 依此類推...
+    # 依此類推，最高規劃至第 13 頁...
 
 【編寫規範 (Rules)】
 - 所有字串值必須包裹在雙引號 "" 內。
@@ -621,7 +628,7 @@ slide_planning:
             <button id="copy-ppt-btn" class="action-btn copy-btn">
               <span class="btn-text">📋 複製簡報規劃提示詞</span>
             </button>
-            <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+            <a href="https://notebooklm.google.com/" target="_blank" class="action-btn link-btn">
               <span>🚀 開啟 NotebookLM</span>
             </a>
           </div>
@@ -631,27 +638,24 @@ slide_planning:
         <div class="card card-ppt-guide">
           <div class="card-num">02</div>
           <div class="card-header-text">
-            <h3>長簡報分組生成與合併指引</h3>
-            <p>透過 PowerPoint 內建功能，將分組簡報無損合併</p>
+            <h3>長簡報分段生成與合併指引</h3>
+            <p>透過分段對話與 PowerPoint 內建功能，無損合併長簡報</p>
           </div>
           
           <div class="guide-steps-container">
             <div class="guide-step">
               <div class="step-badge">1</div>
               <div class="step-body">
-                <h4>1. NBLM 規劃</h4>
-                <p>將左側的「分組規劃提示詞」貼入 NBLM 對話框。它會自動分析您的來源文件（如 PDF 簡報或純文字），以 <strong>YAML 格式</strong> 回傳簡報設計規範與頁面規劃。若總頁數超過 13 頁，會以 <code>---</code> 分隔出多組 YAML 區塊。</p>
+                <h4>1. 第一階段：生成 Part 1</h4>
+                <p>複製左側「第一階段：生成 Part 1」提示詞，貼入 NotebookLM 對話框。它會自動分析您的來源文件並以 <strong>YAML 格式</strong> 規劃出第 1 至 13 頁的簡報架構與全域設計規範。複製該 YAML，在 NBLM 中點選 <strong>「建立簡報」</strong> 生成並下載為 <code>Part1.pptx</code>。</p>
               </div>
             </div>
             
             <div class="guide-step">
               <div class="step-badge">2</div>
               <div class="step-body">
-                <h4>2. 分批生成並下載</h4>
-                <ul class="inner-step-list">
-                  <li>複製 YAML 回應中的 <strong>「第一組 YAML 區塊」</strong>，點選 NBLM 內建的 <strong>「建立簡報」</strong> 功能貼上並生成，下載為 <code>Part1.pptx</code>。</li>
-                  <li>複製 <strong>「第二組 YAML 區塊」</strong>（會自動包含第一組的風格錨點與視覺緩衝），在 NBLM 中生成並下載為 <code>Part2.pptx</code>，依此類推。</li>
-                </ul>
+                <h4>2. 第二階段：生成 Part 2</h4>
+                <p>在**同一個 NBLM 對話視窗**中，切換並複製左側「第二階段：生成 Part 2」提示詞並送出。此提示詞會指示 AI 讀取上一輪的視覺風格與內容，並在 YAML 中融入風格錨點（第 1 頁）與視覺緩衝（第 13 頁），以規劃第 14 頁以後的新內容。複製產出的 Part 2 YAML，在 NBLM 中生成並下載為 <code>Part2.pptx</code>。</p>
               </div>
             </div>
             
@@ -666,7 +670,7 @@ slide_planning:
                   <li><strong>選取檔案</strong>：在右側開啟的窗格中點擊 <strong>「瀏覽」</strong>，選取下載的 <code>Part2.pptx</code>。</li>
                   <li><strong>💡 關鍵步驟</strong>：在右側窗格最下方，<strong>【務必勾選】➔「保留來源格式」 (Keep source formatting)</strong>。</li>
                   <li><strong>一鍵插入</strong>：在投影片縮圖上按滑鼠右鍵 ➔ 選取 <strong>「插入所有投影片」</strong>。</li>
-                  <li><strong>存檔完成</strong>：重複上述步驟插入 Part3、Part4 等，另存新檔即完成！</li>
+                  <li><strong>清理重複頁面</strong>：合併後，手動刪除 Part 2 中重複的「封面 (第 1 頁)」與「過渡頁 (原第 13 頁)」，另存新檔即完成！</li>
                 </ol>
               </div>
             </div>
@@ -870,7 +874,7 @@ slide_planning:
               <button id="copy-video-btn" class="action-btn copy-btn copy-btn-video">
                 <span class="btn-text">📋 複製影片總覽指令</span>
               </button>
-              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+              <a href="https://notebooklm.google.com/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>
               </a>
             </div>
@@ -1057,7 +1061,7 @@ slide_planning:
               <button id="copy-narrative-btn" class="action-btn copy-btn copy-btn-gold">
                 <span class="btn-text">📋 複製簡報口白指令</span>
               </button>
-              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+              <a href="https://notebooklm.google.com/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>
               </a>
             </div>
@@ -1241,7 +1245,7 @@ slide_planning:
               <button id="copy-html-btn" class="action-btn copy-btn copy-btn-cyan" style="background: linear-gradient(135deg, #00d2d1, #00b894); box-shadow: 0 4px 15px rgba(0, 210, 211, 0.3);">
                 <span class="btn-text">📋 複製 HTML 簡報提示詞</span>
               </button>
-              <a href="https://notebooklm.google/" target="_blank" class="action-btn link-btn">
+              <a href="https://notebooklm.google.com/" target="_blank" class="action-btn link-btn">
                 <span>🚀 開啟 NotebookLM</span>
               </a>
             </div>

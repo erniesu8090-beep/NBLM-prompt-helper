@@ -1167,3 +1167,46 @@ body {
   border-color: #27ae60 !important;
   box-shadow: 0 0 15px rgba(39, 174, 96, 0.4) !important;
 }
+
+/* ==========================================================================
+   PPT MODE TABS & TOGGLES (METHOD 2)
+   ========================================================================== */
+.ppt-mode-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 16px;
+  gap: 4px;
+}
+
+.ppt-mode-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ppt-mode-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ppt-mode-btn.active {
+  background: var(--channel-b-gradient);
+  border-color: var(--channel-b-color);
+  color: #ffffff;
+  box-shadow: 0 0 10px var(--channel-b-glow);
+}
+
