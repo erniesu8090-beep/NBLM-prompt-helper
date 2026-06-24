@@ -899,7 +899,7 @@ slides:
 
   # 依此類推，接續規劃後續頁面...
 
-# (在此處輸出檢測註解)\`
+# (在此處輸出檢測註解)`
   };
 
   if (pptBtnStep1 && pptBtnStep2 && pptTemplateText) {
