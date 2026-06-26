@@ -16,7 +16,7 @@
   <div class="container">
     
     <!-- HEADER -->
-    <header class="header theme-audio">
+    <header class="header theme-ppt">
       <div class="logo-area">
         <div class="logo-icon-wrapper">
           <svg class="logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,37 +43,39 @@
           </svg>
         </div>
         <div class="logo-text">
-          <h1>CAST. <span>Studio</span></h1>
+          <h1>CAST. <span>Studio</span><span class="logo-badge">NotebookLM</span></h1>
           <p>MULTI-MODAL PROMPT CONSOLE</p>
         </div>
       </div>
       <div class="header-tagline">
-        <h2 id="header-title">調出兩個聲音的對話節奏</h2>
-        <p id="header-desc">為主持人設定人設與節奏，一鍵輸出完美對話提示詞</p>
+        <h2 id="header-title">突破簡報 15 頁的生成限制</h2>
+        <p id="header-desc">自動分組規劃與首尾銜接，無損合併完美長簡報</p>
       </div>
       <div class="status-badge">
         <span class="status-dot"></span>
-        <span>CONSOLE ACTIVE v2.3.0 (2026/06/23)</span>
+        <span>CONSOLE ACTIVE v2.4.0 (2026/06/26)</span>
       </div>
     </header>
 
     <!-- TAB NAVIGATION -->
     <nav class="tab-navigation">
-      <button class="tab-btn active" data-tab="audio-overview">
+      <div class="tab-group-border">
+        <button class="tab-btn active" data-tab="presentation-helper">
+          <span class="tab-icon">📊</span>
+          <span class="tab-text">簡報 15頁限制突破</span>
+        </button>
+        <button class="tab-btn" data-tab="slide-narrative">
+          <span class="tab-icon">🗣️</span>
+          <span class="tab-text">簡報講解口白</span>
+        </button>
+      </div>
+      <button class="tab-btn" data-tab="audio-overview">
         <span class="tab-icon">🎙️</span>
         <span class="tab-text">雙通道語音提示詞</span>
-      </button>
-      <button class="tab-btn" data-tab="presentation-helper">
-        <span class="tab-icon">📊</span>
-        <span class="tab-text">簡報 15頁限制突破</span>
       </button>
       <button class="tab-btn" data-tab="video-summary">
         <span class="tab-icon">📹</span>
         <span class="tab-text">影片摘要提示詞</span>
-      </button>
-      <button class="tab-btn" data-tab="slide-narrative">
-        <span class="tab-icon">🗣️</span>
-        <span class="tab-text">簡報講解口白</span>
       </button>
       <button class="tab-btn" data-tab="html-presentation">
         <span class="tab-icon">🌐</span>
@@ -84,7 +86,7 @@
     <!-- WORKSPACE TABS CONTENT -->
     
     <!-- TAB 1: AUDIO OVERVIEW WORKSPACE -->
-    <div id="audio-overview-workspace" class="workspace-tab-content active">
+    <div id="audio-overview-workspace" class="workspace-tab-content">
       <div class="main-grid">
         
         <!-- LEFT: PARAMETERS PANEL -->
@@ -551,7 +553,7 @@
     </div> <!-- Closes audio-overview-workspace -->
 
     <!-- TAB 2: PRESENTATION HELPER WORKSPACE -->
-    <div id="presentation-helper-workspace" class="workspace-tab-content">
+    <div id="presentation-helper-workspace" class="workspace-tab-content active">
       <div class="presentation-grid" style="margin-bottom: 24px;">
         <div class="card card-ppt-prompt">
           <div class="card-num">01</div>
@@ -946,6 +948,8 @@ slide_planning:
               <span class="tag-pill narrative-tag-pill" data-tag="商業簡報">📊 商業簡報</span>
               <span class="tag-pill narrative-tag-pill" data-tag="理財分享">📈 理財分享</span>
               <span class="tag-pill narrative-tag-pill" data-tag="產品介紹">📦 產品介紹</span>
+              <span class="tag-pill narrative-tag-pill" data-tag="法規宣導">⚖️ 法規宣導</span>
+              <span class="tag-pill narrative-tag-pill" data-tag="人生智慧">🧘 人生智慧</span>
             </div>
           </div>
 
@@ -966,6 +970,8 @@ slide_planning:
                   <option value="資深產品經理 (PM)">資深產品經理 (PM)</option>
                   <option value="理財與投資顧問">理財與投資顧問</option>
                   <option value="說故事大師 / 歷史說書人">說故事大師 / 歷史說書人</option>
+                  <option value="法規監察與合規官">法規監察與合規官</option>
+                  <option value="心靈導師 / 人生教練">心靈導師 / 人生教練</option>
                   <option value="自訂人設">自訂人設 (於下方手動輸入)</option>
                 </select>
               </div>
@@ -1001,6 +1007,8 @@ slide_planning:
                   <option value="故事引導、引人入勝、情感豐富">故事引導 - 引人入勝、情感豐富</option>
                   <option value="白話易懂、循序漸進、適合初學者">白話易懂 - 循序漸進、適合初學者</option>
                   <option value="具說服力、直擊痛點、極具商業氣場">具說服力 - 直擊痛點、極具商業氣場</option>
+                  <option value="穩重客觀、條理分明、強調合規與預防">穩重防範 - 穩重客觀、條理分明、強調合規與預防</option>
+                  <option value="溫和謙遜、睿智溫暖、啟發心靈與感悟">溫暖啟發 - 溫和謙遜、睿智溫暖、啟發心靈與感悟</option>
                 </select>
               </div>
               <div class="form-col">
@@ -1074,6 +1082,20 @@ slide_planning:
                   <div class="btn-info">
                     <span class="btn-title">產品推廣商業簡報口白 (犀利說服)</span>
                     <span class="btn-subtitle">產品經理 + 犀利說服 ➔ 聚焦市場痛點與價值傳遞</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="narrative-preset-law" style="border-left: 3px solid #f0932b;">
+                  <span class="btn-icon" style="color: #f0932b;">⚖️</span>
+                  <div class="btn-info">
+                    <span class="btn-title">企業合規法規宣導簡報口白 (穩重防範)</span>
+                    <span class="btn-subtitle">合規官 + 穩重客觀 ➔ 強調風險防範與合規重要性</span>
+                  </div>
+                </button>
+                <button class="preset-btn" id="narrative-preset-wisdom" style="border-left: 3px solid #f0932b;">
+                  <span class="btn-icon" style="color: #f0932b;">🧘</span>
+                  <div class="btn-info">
+                    <span class="btn-title">人生智慧哲理分享簡報口白 (溫暖啟發)</span>
+                    <span class="btn-subtitle">心靈導師 + 溫暖啟發 ➔ 啟迪思維與引導心靈感悟</span>
                   </div>
                 </button>
               </div>

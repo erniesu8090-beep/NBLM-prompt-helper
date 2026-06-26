@@ -955,7 +955,7 @@ function init() {
     
     pages.forEach((p, idx) => {
       let linesToUse = p.lines;
-      if (idx === 0) {
+      if (idx === 0 && partNum > 1) {
         // Clone the lines of the first page to avoid modifying the original pageBlock
         linesToUse = [...p.lines];
         for (let i = 0; i < linesToUse.length; i++) {
@@ -1223,7 +1223,9 @@ function init() {
     "工業技術": "關於「化工廠精餾系統操作優化與安全防護」技術培訓簡報",
     "商業簡報": "關於「AI 創新科技在智慧零售的應用與未來展望」商業提案簡報",
     "理財分享": "關於「存股心法與家庭資產配置複利效應」理財規劃簡報",
-    "產品介紹": "關於「最新旗艦降噪藍牙耳機規格與功能評測」產品開箱簡報"
+    "產品介紹": "關於「最新旗艦降噪藍牙耳機規格與功能評測」產品開箱簡報",
+    "法規宣導": "關於「公司企業誠信經營與反貪腐法規合規宣導」簡報",
+    "人生智慧": "關於「論語智慧與現代職場人際關係引導」哲理簡報"
   };
 
   narrativeTagPills.forEach(pill => {
@@ -1269,6 +1271,26 @@ function init() {
       length: "150字以內 (極簡精煉，約30秒解說)",
       structure: "逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)",
       directives: "簡報口白聚焦在產品如何幫客戶『降低 30% 損耗率』與『提升 15% 提袋率』，用詞明快精煉，直擊商業價值。"
+    },
+    law: {
+      topic: "公司企業誠信經營與反貪腐法規合規宣導簡報",
+      role: "法規監察與合規官",
+      custom: "",
+      background: "具備多年企業合規審查與法律風險防範經驗的資深法務專家",
+      tone: "穩重客觀、條理分明、強調合規與預防",
+      length: "50-300字 (結構適中，約0.5-2分鐘解說)",
+      structure: "逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)",
+      directives: "用語應嚴謹客觀且條理分明，重點提醒法規風險防範與案例警示，強調企業誠信經營之核心價值。"
+    },
+    wisdom: {
+      topic: "論語智慧與現代職場人際關係引導簡報",
+      role: "心靈導師 / 人生教練",
+      custom: "",
+      background: "深研中西哲學與個人成長諮商十餘年、擅長引導心靈反思的人生導師",
+      tone: "溫和謙遜、睿智溫暖、啟發心靈與感悟",
+      length: "50-300字 (結構適中，約0.5-2分鐘解說)",
+      structure: "逐頁解說 + 重點整理 (標示每頁主題與 3 個重點項目)",
+      directives: "用詞需溫柔且富有洞察力，適當融入古人哲理與生活反思，幫助聽眾將職場摩擦轉化為自我修煉的契機。"
     }
   };
 
@@ -1286,7 +1308,7 @@ function init() {
     if (narrativeDirectivesInput) narrativeDirectivesInput.value = preset.directives;
 
     // Toggle active style of preset buttons
-    ["technical", "science", "business"].forEach(k => {
+    ["technical", "science", "business", "law", "wisdom"].forEach(k => {
       const btn = document.getElementById(`narrative-preset-${k}`);
       if (btn) {
         if (k === key) {
@@ -1300,7 +1322,7 @@ function init() {
     updateNarrativePrompt();
   }
 
-  ["technical", "science", "business"].forEach(key => {
+  ["technical", "science", "business", "law", "wisdom"].forEach(key => {
     const btn = document.getElementById(`narrative-preset-${key}`);
     if (btn) {
       btn.addEventListener("click", () => loadNarrativePreset(key));
