@@ -552,27 +552,16 @@
 
     <!-- TAB 2: PRESENTATION HELPER WORKSPACE -->
     <div id="presentation-helper-workspace" class="workspace-tab-content">
-      <div class="presentation-grid">
-        
-        <!-- Left Column: PPT Prompt Master -->
+      <div class="presentation-grid" style="margin-bottom: 24px;">
         <div class="card card-ppt-prompt">
           <div class="card-num">01</div>
           <div class="card-header-text">
-            <h3>NBLM 專用分組提示詞範本</h3>
-            <p>複製下方提示詞貼入 NotebookLM 對話框，進行長簡報分組規劃</p>
-          </div>
-          
-          <div class="ppt-mode-tabs">
-            <button id="ppt-mode-btn-step1" class="ppt-mode-btn active" data-step="1">
-              <span>第一階段：生成 Part 1 (1-10頁)</span>
-            </button>
-            <button id="ppt-mode-btn-step2" class="ppt-mode-btn" data-step="2">
-              <span>第二階段：生成 Part 2 (接續頁)</span>
-            </button>
+            <h3>NBLM 全域簡報規劃提示詞</h3>
+            <p>複製下方提示詞貼入 NotebookLM 對話框，進行全域簡報架構與內容規劃</p>
           </div>
           
           <div class="prompt-preview-box">
-            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃「第一組」的簡報架構（第 1 頁至第 10 頁）。你具備以下能力與遵循準則：
+            <pre id="ppt-template-text" class="prompt-text">你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃**完整且極致豐富**的簡報架構（不要有頁數限制）。你具備以下能力與遵循準則：
 
 【角色定位 (Role Definition)】
 - 逆向工程 (Reverse Engineering): 能深入分析來源文件（如 PDF 簡報、視覺圖片），拆解其設計 DNA，包含氛圍、配色邏輯與版面結構。
@@ -580,8 +569,9 @@
 
 【核心任務與行為準則 (Core Tasks & Behavior)】
 無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（不可包含任何非 YAML 的說明文字）。請嚴格遵守以下邏輯：
-- 僅輸出「第一組」的簡報規劃，頁數限制為第 1 頁至第 10 頁。
-- 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points）。
+- 規劃**完整**的簡報，不要自我設限在 10 頁內。**為了能深入且完整地覆蓋所有內容，簡報的理想總頁數應設定為至少 15 至 30 頁（請根據來源文件的資訊量與複雜度進行最大化的延展規劃，確保沒有遺漏任何子主題、背景脈絡或細部流程）**。
+- **深度展開與細節化 (Granularity)**：請將來源文件中的每一個章節、核心論點、運作機制、具體步驟、數據表格、案例分析與後續展望，皆拆解並展開為獨立的投影片頁面。**嚴禁為了精簡而合併多個重要觀點到同一頁中**。
+- 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points，且在 generation_prompt 中，必須撰寫盡可能詳細、豐富、條理清晰且具備實體細節與排版引導的生成指令，避免過於簡短或抽象描述，以利生成高品質簡報）。
 - 當要求「分析」來源時：觀察來源的視覺特徵，提取出 global_design_specification（全域設計規範），並歸納其內容邏輯，轉化為 slide_planning（頁面規劃）。
 - 當要求「生成」簡報架構時：根據來源內容的主題，自動定義最適合的 global_design_specification（如：科技主題配深色模式、教育主題配明亮手繪），並將內容拆解為 slide_planning，確保每一頁都有明確的 visual_description 與 generation_prompt。
 - 移除所有來源的項目編號，確保內容簡潔。
@@ -613,10 +603,10 @@ slide_planning:
     content:
       title: "頁面大標題"
       subtitle: "副標題"
-      generation_prompt: "給 AI 的投影片版面文字生成指令 (包含重點列點與邏輯，生動具體，80字內)"
+      generation_prompt: "給 AI 的投影片版面文字生成指令 (包含重點列點與邏輯，請提供盡可能詳細、具體且豐富的排版描述與簡報內容細節，生動且富有深度，至少 50-80 字)"
 
   - page: 2
-    # 依此類推，最高規劃至第 10 頁...
+    # 依此類推，持續規劃後續所有頁面...
 
 【編寫規範 (Rules)】
 - 所有字串值必須包裹在雙引號 "" 內。
@@ -626,59 +616,105 @@ slide_planning:
           
           <div class="ppt-actions">
             <button id="copy-ppt-btn" class="action-btn copy-btn">
-              <span class="btn-text">📋 複製簡報規劃提示詞</span>
+              <span class="btn-text">📋 複製全域規劃提示詞</span>
             </button>
             <a href="https://notebooklm.google.com/" target="_blank" class="action-btn link-btn">
               <span>🚀 開啟 NotebookLM</span>
             </a>
           </div>
         </div>
-
-        <!-- Right Column: Merging instructions -->
         <div class="card card-ppt-guide">
           <div class="card-num">02</div>
           <div class="card-header-text">
-            <h3>長簡報分段生成與合併指引</h3>
-            <p>透過分段對話與 PowerPoint 內建功能，無損合併長簡報</p>
+            <h3>全域簡報生成與合併指引 (新流程)</h3>
+            <p>透過全域規劃、自動分段切割與 PowerPoint 內建功能，實現完美長簡報生成</p>
           </div>
           
           <div class="guide-steps-container">
             <div class="guide-step">
               <div class="step-badge">1</div>
               <div class="step-body">
-                <h4>1. 第一階段：生成 Part 1</h4>
-                <p>複製左側「第一階段：生成 Part 1」提示詞，貼入 NotebookLM 對話框。它會自動分析您的來源文件並以 <strong>YAML 格式</strong> 規劃出第 1 至 10 頁的簡報架構與全域設計規範。複製該 YAML，在 NBLM 中點選 <strong>「建立簡報」</strong> 生成並下載為 <code>Part1.pptx</code>。</p>
+                <h4>1. 複製提示詞並貼入 NotebookLM</h4>
+                <p>複製左側的「全域規劃提示詞」，貼入 NotebookLM 對話框中。它會分析您的來源文件，並在單次對話中規劃出**完整**的 YAML 結構（例如 1-25 頁），確保簡報內容與邏輯具備全域連貫性。</p>
               </div>
             </div>
             
             <div class="guide-step">
               <div class="step-badge">2</div>
               <div class="step-body">
-                <h4>2. 第二階段：生成 Part 2</h4>
-                <p>在**同一個 NBLM 對話視窗**中，切換並複製左側「第二階段：生成 Part 2」提示詞並送出。此提示詞會指示 AI 讀取上一輪的視覺風格與內容，並在 YAML 中融入風格錨點（第 1 頁）與視覺緩衝（第 10 頁），以規劃第 11 頁以後的新內容。複製產出的 Part 2 YAML，在 NBLM 中生成並下載為 <code>Part2.pptx</code>。</p>
+                <h4>2. 切割全域 YAML 代碼</h4>
+                <p>複製 NotebookLM 產出的完整 YAML 代碼，貼入左下方的「簡報 YAML 智慧切割器」中，選擇每組頁數上限（10 或 12 頁），然後點選「開始切割 YAML」。</p>
+              </div>
+            </div>
+            
+            <div class="guide-step">
+              <div class="step-badge">3</div>
+              <div class="step-body">
+                <h4>3. 在 NBLM 中建立各分段簡報</h4>
+                <p>依序複製切割出的各 Part YAML，回到 NotebookLM 中，點選對話框旁的 **「建立簡報」** 按鈕，將 YAML 貼上並生成。分別下載為 <code>Part1.pptx</code>、<code>Part2.pptx</code>、<code>Part3.pptx</code> 等檔案。</p>
               </div>
             </div>
             
             <div class="guide-step highlight-step">
-              <div class="step-badge">3</div>
+              <div class="step-badge">4</div>
               <div class="step-body">
-                <h4>3. PowerPoint 完美無損合併 (100% 格式與動畫)</h4>
-                <p>PowerPoint 內建「重複使用投影片」功能，能直接將多個檔案合併，且<strong>完全不跑版，能保留所有動畫與母片樣式</strong>：</p>
+                <h4>4. PowerPoint 完美無損合併</h4>
+                <p>利用 PowerPoint 內建的「重複使用投影片」功能進行無損合併：</p>
                 <ol class="step-ol">
-                  <li><strong>開啟基準簡報</strong>：先用 PowerPoint 開啟 <code>Part1.pptx</code>。</li>
-                  <li><strong>開啟合併面板</strong>：選取上方工具列 <strong>「常用」</strong> ➔ 點擊 <strong>「新增投影片」</strong> 旁的下拉箭頭 ➔ 點選 <strong>「重複使用投影片」</strong> (Reuse Slides)。</li>
-                  <li><strong>選取檔案</strong>：在右側開啟的窗格中點擊 <strong>「瀏覽」</strong>，選取下載的 <code>Part2.pptx</code>。</li>
+                  <li><strong>開啟基準簡報</strong>：用 PowerPoint 開啟 <code>Part1.pptx</code>。</li>
+                  <li><strong>開啟合併面板</strong>：點擊上方工具列 <strong>「常用」</strong> ➔ 點擊 <strong>「新增投影片」</strong> 下拉箭頭 ➔ 點選 <strong>「重複使用投影片」</strong> (Reuse Slides)。</li>
+                  <li><strong>選取檔案</strong>：在右側窗格中點擊 <strong>「瀏覽」</strong>，選取 <code>Part2.pptx</code> (以此類推)。</li>
                   <li><strong>💡 關鍵步驟</strong>：在右側窗格最下方，<strong>【務必勾選】➔「保留來源格式」 (Keep source formatting)</strong>。</li>
                   <li><strong>一鍵插入</strong>：在投影片縮圖上按滑鼠右鍵 ➔ 選取 <strong>「插入所有投影片」</strong>。</li>
-                  <li><strong>清理重複頁面</strong>：合併後，手動刪除 Part 2 中重複的「封面 (第 1 頁)」與「過渡頁 (原第 10 頁)」，另存新檔即完成！</li>
+                  <li><strong>清理重複頁面</strong>：合併後，手動刪除各 Part 中重複的「風格錨點頁 (封面)」與「過渡頁」，另存新檔即完成！</li>
                 </ol>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Card 3: YAML Splitter -->
+      <div class="card card-yaml-splitter">
+        <div class="card-num" style="background: linear-gradient(135deg, #a55eea, #c8d6e5); box-shadow: 0 0 10px rgba(165, 94, 234, 0.4);">03</div>
+        <div class="card-header-text">
+          <h3>簡報 YAML 智慧切割器 (YAML Splitter)</h3>
+          <p>將 NotebookLM 一口氣產出的全域 YAML 貼在下方，自動為您處理 10/12 頁上限並生成分段 Parts</p>
+        </div>
         
+        <div class="splitter-workspace">
+          <div class="splitter-input-area">
+            <div class="form-row" style="margin-bottom: 12px; display: flex; gap: 14px; align-items: center;">
+              <div class="form-col" style="flex: 1;">
+                <label for="ppt-split-limit" style="margin-bottom: 4px; font-size: 13px; color: var(--text-muted);">每組頁數上限 (含錨點頁)</label>
+                <select id="ppt-split-limit" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); color: white;">
+                  <option value="10" selected>每組最多 10 頁 (推薦)</option>
+                  <option value="12">每組最多 12 頁</option>
+                </select>
+              </div>
+            </div>
+            <label for="ppt-yaml-input">請貼上 NotebookLM 輸出的完整 YAML：</label>
+            <textarea id="ppt-yaml-input" placeholder="貼上完整的 YAML 代碼（需包含 global_design_specification 與 slide_planning...）" rows="12"></textarea>
+            <div class="splitter-actions" style="display: flex; gap: 12px; margin-top: 12px;">
+              <button id="ppt-split-btn" class="action-btn" style="flex: 3;">
+                <span>✂️ 開始切割 YAML</span>
+              </button>
+              <button id="ppt-clear-btn" class="action-btn" style="flex: 1; background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: var(--text-muted);">
+                <span>🧹 清空</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="splitter-output-area">
+            <label>分段切割結果：</label>
+            <div id="yaml-split-results" class="split-results-placeholder">
+              等待輸入 YAML 並點擊開始切割...
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
 
     <!-- TAB 3: VIDEO SUMMARY WORKSPACE -->
     <div id="video-summary-workspace" class="workspace-tab-content">

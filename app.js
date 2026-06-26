@@ -813,124 +813,230 @@ function init() {
     });
   }
 
-  // PPT Step 1 & Step 2 Prompt switcher logic
-  const pptBtnStep1 = document.getElementById("ppt-mode-btn-step1");
-  const pptBtnStep2 = document.getElementById("ppt-mode-btn-step2");
+  // YAML Splitter Event Listeners and Logic
+  const pptSplitBtn = document.getElementById("ppt-split-btn");
+  const pptClearBtn = document.getElementById("ppt-clear-btn");
+  const pptYamlInput = document.getElementById("ppt-yaml-input");
+  const yamlSplitResults = document.getElementById("yaml-split-results");
 
-      const PPT_PROMPTS = {
-    step1: `你是一位頂尖的簡報架構師 (Presentation Architect)。請深入分析目前筆記本中的所有來源文件，並為我規劃「第一組」的簡報架構（第 1 頁至第 10 頁）。你具備以下能力與遵循準則：
+  if (pptSplitBtn && pptYamlInput && yamlSplitResults) {
+    pptSplitBtn.addEventListener("click", () => {
+      const rawYaml = pptYamlInput.value.trim();
+      if (!rawYaml) {
+        yamlSplitResults.innerHTML = `<span style="color: var(--status-red);">❌ 請先貼入 YAML 內容再進行切割！</span>`;
+        return;
+      }
 
-【角色定位 (Role Definition)】
-- 逆向工程 (Reverse Engineering): 能深入分析來源文件（如 PDF 簡報、視覺圖片），拆解其設計 DNA，包含氛圍、配色邏輯與版面結構。
-- 結構生成 (Structure Generation): 能根據純文字來源，規劃出具備敘事邏輯與視覺張力的簡報架構。
-
-【核心任務與行為準則 (Core Tasks & Behavior)】
-無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（不可包含任何非 YAML 的說明文字）。請嚴格遵守以下邏輯：
-- 僅輸出「第一組」的簡報規劃，頁數限制為第 1 頁至第 10 頁。
-- 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points）。
-- 當要求「分析」來源時：觀察來源的視覺特徵，提取出 global_design_specification（全域設計規範），並歸納其內容邏輯，轉化為 slide_planning（頁面規劃）。
-- 當要求「生成」簡報架構時：根據來源內容的主題，自動定義最適合的 global_design_specification（如：科技主題配深色模式、教育主題配明亮手繪），並將內容拆解為 slide_planning，確保每一頁都有明確的 visual_description 與 generation_prompt。
-- 移除所有來源的項目編號，確保內容簡潔。
-- 生成的簡報內容不要有字體的名字。
-
-【YAML 輸出標準格式 (Output Schema)】
-所有輸出內容必須嚴格遵守以下 YAML 架構（不可包含任何非 YAML 的 markdown 說明文字），請務必維持欄位的精簡（特別是描述與指令的長度），以防貼入簡報系統時字數超限：
-
-global_design_specification:
-  atmosphere: ["形容詞1", "形容詞2", "形容詞3"] # 定義整體調性
-  color_scheme:
-    background: "Hex Code"
-    text: "Hex Code"
-    accent: "Hex Code" # 重點標示色
-    secondary: "Hex Code"
-  typography:
-    heading: "字體與樣式描述"
-    body: "字體與樣式描述"
-  layout_rules:
-    navigation: "頁碼或導航形式"
-    image_style: "圖片處理風格 (如：去背、黑白濾鏡)"
-    decorative_elements: "視覺點綴元素 (如：格線、幾何色塊)"
-
-slide_planning:
-  - page: 1
-    type: "頁面功能 (如：封面、對比頁)"
-    layout_style: "佈局風格 (如：左右分割、滿版聚焦)"
-    visual_description: "畫面視覺與配色描述 (極簡富創意，30字內)"
-    content:
-      title: "頁面大標題"
-      subtitle: "副標題"
-      generation_prompt: "給 AI 的投影片版面文字生成指令 (包含重點列點與邏輯，生動具體，80字內)"
-
-  - page: 2
-    # 依此類推，最高規劃至第 10 頁...
-
-【編寫規範 (Rules)】
-- 所有字串值必須包裹在雙引號 "" 內。
-- 層級縮排必須準確（2 個空格）。
-- 若來源資訊不足，請根據專業設計邏輯進行「合理推斷」並填入 YAML 中，而非留白。`,
-    step2: `你是一位頂尖的簡報架構師 (Presentation Architect)。請根據我們在上一個對話中生成的簡報架構，接續為我規劃**下一組簡報（最多新增 8 頁）**。
-
-為了確保生成時能 100% 自然銜接前一組的視覺與敘事，你必須嚴格遵循以下邏輯與輸出標準：
-
-【核心任務與銜接機制 (Core Tasks & Behavior)】
-1. 無論使用者的請求為何，你必須且僅能以 YAML 格式輸出回應（不可包含任何非 YAML 的說明文字）。
-2. 在此組 YAML 的 slide_planning 開頭，你必須**自動融入「第一組的封面（page: 1，風格錨點）」與「上一組最後一頁（做為視覺與邏輯緩衝區）」**，強迫 NBLM 讀取並錨定先前的視覺特徵。
-3. 接續上一組最後一頁的頁碼，往後規劃後續的簡報頁面（例如：上一組結束於第 10 頁，此組即從第 11 頁開始規劃至第 18 頁；若上一組結束於第 18 頁，此組即從第 19 頁規劃至第 26 頁，依此類推）。
-4. 沿用已定義的設計規範 (global_design_specification)，將其完整填入此組 YAML 的開頭，確保背景色、文字色、強調色與字體完全一致。
-5. 每個核心論點規劃為 1 頁（單頁資訊密度為 1 大標題 + 最多 3 個 Bullet points）。
-6. **【視覺風格絕對一致性】**：為了防止生成風格發散，你必須在每一頁的 \`visual_description\` 中，使用「排除性且極度具體」的簡短風格關鍵字限制。請觀察第一組所使用的核心視覺語彙，並在後續每一頁的指令中強制鎖定（例如：「僅限單色白線平面藍圖，禁用 3D 渲染，背景為純深底」）。
-7. **【多組檢測提示】**：若你評估來源文件的內容在規劃完本組（最多新增 8 頁新內容）後**仍有剩餘**，請在 YAML 輸出最末端以註解形式標記：\`# ⚠️ 提示：來源文件尚未完全解析完畢，請繼續貼入此提示詞以接續規劃下一組。\`。若已講完，則標記：\`# 🎉 提示：所有內容已全數規劃完畢！\`。
-
-【YAML 輸出標準格式 (Output Schema)】
-所有輸出內容必須嚴格遵守以下 YAML 架構（不可包含任何非 YAML 的 markdown 說明文字），請務必維持欄位的精簡（特別是描述與指令的長度），以防貼入簡報系統時字數超限：
-
-global_design_specification:
-  # 完整複製第一組的 global_design_specification
-
-slide_planning:
-  - page: 1
-    type: "第一組的封面"
-    layout_style: "第一組的封面佈局"
-    visual_description: "完整複製第一組封面的視覺描述，作為風格錨點"
-    content:
-      title: "第一組的封面大標題"
-      subtitle: "第一組的副標題"
-      generation_prompt: "第一組封面的生成風格描述，用於錨定投影片視覺"
-
-  - page: [上一組的最後一頁頁碼]
-    type: "上一組最後一頁的功能"
-    layout_style: "上一組最後一頁的排版佈局"
-    visual_description: "完整複製上一組最後一頁的視覺描述，作為緩衝過渡"
-    content:
-      title: "上一組最後一頁的大標題"
-      subtitle: "上一組最後一頁的副標題"
-      generation_prompt: "上一組最後一頁的生成風格描述，用於平滑投影片過渡"
-
-  - page: [接續的起始頁碼]
-    type: "頁面功能 (如：對比頁/內文頁，10字內)"
-    layout_style: "排版佈局 (如：左右對比/三欄網格/核心聚焦，10字內)"
-    visual_description: "詳細畫面視覺與配色配置 (極簡富創意，30字內)"
-    content:
-      title: "本頁大標題"
-      subtitle: "副標題"
-      generation_prompt: "給 AI 的投影片內文生成指令 (包含重點列點與邏輯，生動具體，80字內)"
-
-  # 依此類推，接續規劃後續頁面...
-
-# (在此處輸出檢測註解)`
-  };
-
-  if (pptBtnStep1 && pptBtnStep2 && pptTemplateText) {
-    pptBtnStep1.addEventListener("click", () => {
-      pptBtnStep1.classList.add("active");
-      pptBtnStep2.classList.remove("active");
-      pptTemplateText.textContent = PPT_PROMPTS.step1;
+      try {
+        const parts = splitYaml(rawYaml);
+        renderSplitParts(parts);
+      } catch (err) {
+        yamlSplitResults.innerHTML = `<span style="color: var(--status-red);">❌ 解析錯誤：${err.message}</span>`;
+      }
     });
+  }
 
-    pptBtnStep2.addEventListener("click", () => {
-      pptBtnStep2.classList.add("active");
-      pptBtnStep1.classList.remove("active");
-      pptTemplateText.textContent = PPT_PROMPTS.step2;
+  if (pptClearBtn && pptYamlInput && yamlSplitResults) {
+    pptClearBtn.addEventListener("click", () => {
+      pptYamlInput.value = "";
+      yamlSplitResults.innerHTML = "等待輸入 YAML 並點擊開始切割...";
+      yamlSplitResults.className = "split-results-placeholder";
+    });
+  }
+
+  function splitYaml(yamlString) {
+    const lines = yamlString.split(/\r?\n/);
+    
+    let globalSpecStart = -1;
+    let slidePlanningStart = -1;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith("global_design_specification:")) {
+        globalSpecStart = i;
+      }
+      if (line.startsWith("slide_planning:")) {
+        slidePlanningStart = i;
+        break;
+      }
+    }
+    
+    if (slidePlanningStart === -1) {
+      throw new Error("找不到 `slide_planning:` 欄位，請確認 YAML 格式是否正確。");
+    }
+    
+    const globalSpecLines = lines.slice(Math.max(0, globalSpecStart), slidePlanningStart);
+    
+    const pageBlocks = [];
+    let currentPageLines = [];
+    let currentPageNum = -1;
+    
+    for (let i = slidePlanningStart + 1; i < lines.length; i++) {
+      const line = lines[i];
+      const pageMatch = line.match(/^(\s*)-\s*page:\s*(\d+)/) || line.match(/^(\s*)page:\s*(\d+)/);
+      
+      if (pageMatch) {
+        if (currentPageLines.length > 0) {
+          pageBlocks.push({ num: currentPageNum, lines: currentPageLines });
+        }
+        currentPageNum = parseInt(pageMatch[2], 10);
+        currentPageLines = [line];
+      } else {
+        if (currentPageNum !== -1) {
+          currentPageLines.push(line);
+        }
+      }
+    }
+    
+    if (currentPageLines.length > 0) {
+      pageBlocks.push({ num: currentPageNum, lines: currentPageLines });
+    }
+    
+    if (pageBlocks.length === 0) {
+      throw new Error("找不到任何投影片頁面資訊（`- page: [數字]`），請確認 YAML 格式。");
+    }
+    
+    const pptSplitLimitEl = document.getElementById("ppt-split-limit");
+    const limit = pptSplitLimitEl ? parseInt(pptSplitLimitEl.value, 10) : 10;
+    
+    const parts = [];
+    const totalPages = pageBlocks.length;
+    
+    // Part 1: First `limit` pages (index 0 to limit-1)
+    const part1Pages = pageBlocks.slice(0, Math.min(limit, totalPages));
+    const isPart1Last = totalPages <= limit;
+    parts.push({
+      partNum: 1,
+      pageRange: `第 1 - ${part1Pages[part1Pages.length - 1].num} 頁`,
+      yaml: assemblePartYaml(globalSpecLines, part1Pages, isPart1Last, 1)
+    });
+    
+    // Subsequent parts: (limit - 2) pages per part, plus style anchor (page 1) and buffer (prev part's last page)
+    const newPagesPerPart = limit - 2;
+    let currentIndex = limit;
+    let partCounter = 2;
+    while (currentIndex < totalPages) {
+      const partPages = [];
+      // Style anchor
+      partPages.push(pageBlocks[0]);
+      // Buffer zone (previous part's last page)
+      partPages.push(pageBlocks[currentIndex - 1]);
+      
+      // New pages
+      const newPages = pageBlocks.slice(currentIndex, Math.min(currentIndex + newPagesPerPart, totalPages));
+      partPages.push(...newPages);
+      
+      const startPageNum = newPages[0].num;
+      const endPageNum = newPages[newPages.length - 1].num;
+      
+      const isThisPartLast = (currentIndex + newPagesPerPart) >= totalPages;
+      
+      parts.push({
+        partNum: partCounter,
+        pageRange: `第 1, ${pageBlocks[currentIndex - 1].num}, ${startPageNum} - ${endPageNum} 頁`,
+        yaml: assemblePartYaml(globalSpecLines, partPages, isThisPartLast, partCounter)
+      });
+      
+      currentIndex += newPagesPerPart;
+      partCounter++;
+    }
+    
+    return parts;
+  }
+
+  function assemblePartYaml(globalLines, pages, isLastPart, partNum) {
+    let output = "";
+    if (globalLines.length > 0) {
+      output += globalLines.join("\n") + "\n";
+    } else {
+      output += "global_design_specification:\n  # 全域設計規範已省略\n";
+    }
+    output += "slide_planning:\n";
+    
+    pages.forEach((p, idx) => {
+      let linesToUse = p.lines;
+      if (idx === 0) {
+        // Clone the lines of the first page to avoid modifying the original pageBlock
+        linesToUse = [...p.lines];
+        for (let i = 0; i < linesToUse.length; i++) {
+          const line = linesToUse[i];
+          const match = line.match(/^(\s*title:\s*)(["']?)(.*?)\2\s*$/);
+          if (match) {
+            const prefix = match[1];
+            const quote = match[2] || '"';
+            const titleText = match[3];
+            linesToUse[i] = `${prefix}${quote}[Part ${partNum}] ${titleText}${quote}`;
+            break;
+          }
+        }
+      }
+      output += linesToUse.join("\n") + "\n";
+    });
+    
+    // Add completion comment at the very end
+    if (isLastPart) {
+      output += "\n# 🎉 提示：所有簡報內容已全數規劃完畢！\n";
+    } else {
+      output += "\n# ⚠️ 提示：簡報尚未完全規劃完畢，請繼續複製並生成下一組分段 (Part)。\n";
+    }
+    
+    return output;
+  }
+
+  function renderSplitParts(parts) {
+    yamlSplitResults.innerHTML = "";
+    yamlSplitResults.className = "";
+    
+    parts.forEach((part) => {
+      const partCard = document.createElement("div");
+      partCard.className = "split-part-card";
+      
+      const header = document.createElement("div");
+      header.className = "split-part-header";
+      
+      const title = document.createElement("div");
+      title.className = "split-part-title";
+      title.innerHTML = `📦 Part ${part.partNum} <span class="split-part-badge">${part.pageRange}</span>`;
+      
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "action-btn copy-btn";
+      copyBtn.style.padding = "4px 10px";
+      copyBtn.style.fontSize = "12px";
+      copyBtn.innerHTML = `<span>📋 複製此段</span>`;
+      
+      header.appendChild(title);
+      header.appendChild(copyBtn);
+      
+      const textarea = document.createElement("textarea");
+      textarea.className = "split-part-textarea";
+      textarea.readOnly = true;
+      textarea.value = part.yaml;
+      
+      partCard.appendChild(header);
+      partCard.appendChild(textarea);
+      
+      // Bind copy functionality to this specific part
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(part.yaml)
+          .then(() => {
+            const origText = copyBtn.innerHTML;
+            copyBtn.innerHTML = `<span>✓ 已複製！</span>`;
+            copyBtn.style.background = "#2ecc71";
+            copyBtn.style.borderColor = "#2ecc71";
+            
+            setTimeout(() => {
+              copyBtn.innerHTML = origText;
+              copyBtn.style.background = "";
+              copyBtn.style.borderColor = "";
+            }, 2000);
+          })
+          .catch(err => {
+            console.error("複製失敗：", err);
+            alert("複製失敗，請手動複製文字框內容。");
+          });
+      });
+      
+      yamlSplitResults.appendChild(partCard);
     });
   }
 
@@ -951,13 +1057,33 @@ slide_planning:
     videoTopicInput.addEventListener("change", updateVideoPrompt);
   }
 
-  const videoRadios = [
-    ...document.getElementsByName("video-focus"),
-    ...document.getElementsByName("video-format")
-  ];
-  videoRadios.forEach(radio => {
+  // Bind all other video setting inputs to update the prompt in real time
+  const videoFormatSelect = document.getElementById("video-format-select");
+  if (videoFormatSelect) {
+    videoFormatSelect.addEventListener("change", updateVideoPrompt);
+  }
+
+  const videoAudienceInput = document.getElementById("video-audience-input");
+  if (videoAudienceInput) {
+    videoAudienceInput.addEventListener("input", updateVideoPrompt);
+    videoAudienceInput.addEventListener("change", updateVideoPrompt);
+  }
+
+  const videoStyleRadios = document.getElementsByName("video-style");
+  videoStyleRadios.forEach(radio => {
     radio.addEventListener("change", updateVideoPrompt);
   });
+
+  const videoLengthSelect = document.getElementById("video-length-select");
+  if (videoLengthSelect) {
+    videoLengthSelect.addEventListener("change", updateVideoPrompt);
+  }
+
+  const videoDirectivesInput = document.getElementById("video-directives-input");
+  if (videoDirectivesInput) {
+    videoDirectivesInput.addEventListener("input", updateVideoPrompt);
+    videoDirectivesInput.addEventListener("change", updateVideoPrompt);
+  }
 
   const videoTagPills = document.querySelectorAll(".video-tag-pill");
   videoTagPills.forEach(pill => {
@@ -975,30 +1101,29 @@ slide_planning:
 
   // Video Presets
   const VIDEO_PRESETS = {
+    history: {
+      topic: "古文明歷史演進與社會結構變遷教學影片",
+      audience: "國中生",
+      format: "Explainer (說明解說)",
+      style: "Whiteboard (白板)",
+      length: "10-12 分鐘",
+      directives: "以國中歷史教材為主，採用手繪白板風格。強調以證據來推論歷史思維，引導學生思考歷史事件背後的因果關係與脈絡。"
+    },
     operation: {
       topic: "分餾系統製程操作與現場閥門切換說明影片",
-      focus: "化工/製程講解",
-      format: "操作重點與 SOP 清單"
-    },
-    safety: {
-      topic: "原料進料泵異常洩漏引發火警現場應急處置與搶修錄影",
-      focus: "安全與事故還原",
-      format: "結構化時間軸筆記"
-    },
-    training: {
-      topic: "離心式轉動設備機械振動頻譜分析與故障診斷實務講座",
-      focus: "學術/技術講座",
-      format: "問答與培訓考核庫"
+      audience: "新進操作員",
+      format: "Explainer (說明解說)",
+      style: "Papercraft (紙藝)",
+      length: "10-12 分鐘",
+      directives: "聚焦於閥門操作順序與安全確認流程，搭配紙藝風格展示三維空間結構。"
     },
     finance: {
       topic: "柴鼠存股分析與日常理財規劃工具使用說明影片",
-      focus: "生活理財/3C評測",
-      format: "操作重點與 SOP 清單"
-    },
-    cooking: {
-      topic: "法式紅酒燉牛肉家庭料理實作與火候控制教學影片",
-      focus: "生活理財/3C評測",
-      format: "結構化時間軸筆記"
+      audience: "一般大眾",
+      format: "Brief (摘要速覽)",
+      style: "Watercolor (水彩)",
+      length: "5-8 分鐘",
+      directives: "以水彩溫和風格呈現，將複雜的存股概念與理財規劃工具使用步驟進行精簡摘要，著重核心公式與觀念的解說。"
     }
   };
 
@@ -1007,11 +1132,23 @@ slide_planning:
     if (!preset) return;
 
     if (videoTopicInput) videoTopicInput.value = preset.topic;
-    setRadioValue("video-focus", preset.focus);
-    setRadioValue("video-format", preset.format);
+
+    const formatSelectEl = document.getElementById("video-format-select");
+    if (formatSelectEl && preset.format) formatSelectEl.value = preset.format;
+
+    const audienceInputEl = document.getElementById("video-audience-input");
+    if (audienceInputEl && preset.audience) audienceInputEl.value = preset.audience;
+
+    if (preset.style) setRadioValue("video-style", preset.style);
+
+    const lengthSelectEl = document.getElementById("video-length-select");
+    if (lengthSelectEl && preset.length) lengthSelectEl.value = preset.length;
+
+    const directivesInputEl = document.getElementById("video-directives-input");
+    if (directivesInputEl && preset.directives) directivesInputEl.value = preset.directives;
 
     // Toggle active style of preset buttons
-    ["operation", "safety", "training", "finance", "cooking"].forEach(k => {
+    ["history", "operation", "finance"].forEach(k => {
       const btn = document.getElementById(`video-preset-${k}`);
       if (btn) {
         if (k === key) {
@@ -1025,7 +1162,7 @@ slide_planning:
     updateVideoPrompt();
   }
 
-  ["operation", "safety", "training", "finance", "cooking"].forEach(key => {
+  ["history", "operation", "finance"].forEach(key => {
     const btn = document.getElementById(`video-preset-${key}`);
     if (btn) {
       btn.addEventListener("click", () => loadVideoPreset(key));

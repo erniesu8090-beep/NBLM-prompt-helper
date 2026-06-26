@@ -1210,3 +1210,123 @@ body {
   box-shadow: 0 0 10px var(--channel-b-glow);
 }
 
+/* ==========================================================================
+   YAML SPLITTER WORKSPACE
+   ========================================================================== */
+.splitter-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  margin-top: 15px;
+}
+
+@media (max-width: 1024px) {
+  .splitter-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.splitter-input-area, .splitter-output-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.splitter-input-area label, .splitter-output-area label {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+#ppt-yaml-input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 15px;
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  resize: vertical;
+  line-height: 1.5;
+  transition: border-color 0.2s ease;
+}
+
+#ppt-yaml-input:focus {
+  outline: none;
+  border-color: var(--channel-b-color);
+  box-shadow: 0 0 8px var(--channel-b-glow);
+}
+
+.split-results-placeholder {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  min-height: 300px;
+  text-align: center;
+}
+
+.split-part-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.split-part-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(165, 94, 234, 0.3);
+}
+
+.split-part-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.split-part-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.split-part-badge {
+  background: rgba(165, 94, 234, 0.15);
+  border: 1px solid rgba(165, 94, 234, 0.3);
+  color: #e0b0ff;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.split-part-textarea {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 10px;
+  color: #dddddd;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  height: 140px;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+
+.split-part-textarea:focus {
+  outline: none;
+}
+
