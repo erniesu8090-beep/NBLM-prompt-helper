@@ -1015,11 +1015,60 @@ body {
   display: grid;
   grid-template-columns: 1.25fr 1fr;
   gap: 24px;
+  align-items: start;
 }
 
 .card-ppt-prompt {
   display: flex;
   flex-direction: column;
+}
+
+/* Header Flex Container */
+.card-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header-flex .card-header-text {
+  margin-bottom: 0;
+  margin-left: 32px;
+}
+
+/* Toggle Collapse Button Styling */
+.toggle-collapse-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.toggle-collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-main);
+  transform: translateY(-1px);
+}
+
+.toggle-collapse-btn:active {
+  transform: translateY(0);
+}
+
+.toggle-collapse-btn .toggle-icon {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 10px;
 }
 
 .prompt-preview-box {
@@ -1033,6 +1082,20 @@ body {
   flex-grow: 1;
   font-family: 'Courier New', Courier, monospace;
   margin-bottom: 20px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+}
+
+.prompt-preview-box.collapsed {
+  min-height: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-color: transparent;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .ppt-actions {

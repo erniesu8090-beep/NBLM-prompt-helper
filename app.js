@@ -813,6 +813,22 @@ function init() {
     });
   }
 
+  // Toggle PPT Prompt preview box collapse/expand
+  const togglePptPromptBtn = document.getElementById("toggle-ppt-prompt-btn");
+  const pptPromptBox = document.querySelector(".prompt-preview-box");
+  
+  if (togglePptPromptBtn && pptPromptBox) {
+    togglePptPromptBtn.addEventListener("click", () => {
+      const isCollapsed = pptPromptBox.classList.toggle("collapsed");
+      togglePptPromptBtn.classList.toggle("collapsed", isCollapsed);
+      const text = togglePptPromptBtn.querySelector(".toggle-text");
+      
+      if (text) {
+        text.textContent = isCollapsed ? "展開提示詞" : "收折提示詞";
+      }
+    });
+  }
+
   // YAML Splitter Event Listeners and Logic
   const pptSplitBtn = document.getElementById("ppt-split-btn");
   const pptClearBtn = document.getElementById("ppt-clear-btn");
